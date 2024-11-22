@@ -22,7 +22,7 @@
 </template>
 <script>
 export default {
-  name: "paper-table",
+  name: "zigg-table",
   props: {
     columns: Array,
     data: Array,

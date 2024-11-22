@@ -7,7 +7,7 @@
 
 ## [2.0.0] 2018-05-01
 
-## Vue Paper Dashboard Version 2
+## Vue zigg Dashboard Version 2
 
 - Bootstrap 4 update
   - Migrate components to support BS4 as well as existing scss assets

@@ -13,17 +13,21 @@
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
  */
-import Vue from "vue";
-import App from "./App";
-import router from "./router/index";
-
-import ziggDashboard from "./plugins/ziggDashboard";
-import "vue-notifyjs/themes/default.css";
-
-Vue.use(ziggDashboard);
-
-/* eslint-disable no-new */
-new Vue({
-  router,
-  render: (h) => h(App),
-}).$mount("#app");
+@import "zigg/variables";
+@import "zigg/mixins";
+@import "zigg/typography";
+// Core CSS
+@import "zigg/misc";
+@import "zigg/sidebar-and-main-panel";
+@import "zigg/buttons";
+@import "zigg/inputs";
+@import "zigg/alerts";
+@import "zigg/tables";
+@import "zigg/checkbox-radio";
+@import "zigg/navbars";
+@import "zigg/footers";
+// Fancy Stuff
+@import "zigg/dropdown";
+@import "zigg/cards";
+@import "zigg/chartist";
+@import "zigg/responsive";

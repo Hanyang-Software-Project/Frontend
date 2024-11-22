@@ -8,7 +8,7 @@
               type="text"
               label="Company"
               :disabled="true"
-              placeholder="Paper dashboard"
+              placeholder="zigg dashboard"
               v-model="user.company"
             >
             </fg-input>

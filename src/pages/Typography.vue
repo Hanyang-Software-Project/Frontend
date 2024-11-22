@@ -14,37 +14,37 @@
           <div class="typo-line">
             <h1>
               <p class="category">Header 1</p>
-              Paper Dashboard Heading
+              zigg Dashboard Heading
             </h1>
           </div>
           <div class="typo-line">
             <h2>
               <p class="category">Header 2</p>
-              Paper Dashboard Heading
+              zigg Dashboard Heading
             </h2>
           </div>
           <div class="typo-line">
             <h3>
               <p class="category">Header 3</p>
-              Paper Dashboard Heading
+              zigg Dashboard Heading
             </h3>
           </div>
           <div class="typo-line">
             <h4>
               <p class="category">Header 4</p>
-              Paper Dashboard Heading
+              zigg Dashboard Heading
             </h4>
           </div>
           <div class="typo-line">
             <h5>
               <p class="category">Header 5</p>
-              Paper Dashboard Heading
+              zigg Dashboard Heading
             </h5>
           </div>
           <div class="typo-line">
             <h6>
               <p class="category">Header 6</p>
-              Paper Dashboard Heading
+              zigg Dashboard Heading
             </h6>
           </div>
           <div class="typo-line">

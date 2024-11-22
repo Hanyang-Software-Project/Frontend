@@ -60,7 +60,7 @@
         </nav>
         <div class="copyright pull-right">
           &copy; 2017, made with
-          <i class="fa fa-heart heart"></i> by Paper admin
+          <i class="fa fa-heart heart"></i> by zigg admin
         </div>
       </div>
     </footer>
