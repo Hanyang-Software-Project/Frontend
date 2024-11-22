@@ -1,24 +1,37 @@
-# [Vue Paper Dashboard](https://cristijora.github.io/vue-paper-dashboard/)
+# ziggsfront
 
-> Admin dashboard based on paper dashboard UI template + vue-router
+This template should help get you started developing with Vue 3 in Vite.
 
-This project is a vue version of [Paper-dashboard](https://www.creative-tim.com/product/paper-dashboard)
-designed for vue js.The dashboard includes vue-router
+## Recommended IDE Setup
 
-Check the [Live Demo here](https://cristijora.github.io/vue-paper-dashboard).
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-[Nuxt Version (outdated Bootstrap 3)](https://github.com/cristijora/vue-paper-dashboard-nuxt)
-![](http://i.imgur.com/3iC1hOs.gif)
+## Type Support for `.vue` Imports in TS
 
-## Deploy
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
 
-:rocket: You can deploy your own version of the template to Genezio with one click:
+## Customize configuration
 
-[![Deploy to Genezio](https://raw.githubusercontent.com/Genez-io/graphics/main/svg/deploy-button.svg)](https://app.genez.io/start/deploy?repository=https://github.com/creativetimofficial/vue-paper-dashboard&utm_source=github&utm_medium=referral&utm_campaign=github-creativetim&utm_term=deploy-project&utm_content=button-head)
+See [Vite Configuration Reference](https://vite.dev/config/).
 
-## Documentation
+## Project Setup
 
-Link to [Documentation](http://vuejs.creative-tim.com/vue-paper-dashboard/documentation/)
+```sh
+npm install
+```
+
+### Compile and Hot-Reload for Development
+
+```sh
+npm run dev
+```
+
+### Type-Check, Compile and Minify for Production
+
+```sh
+npm run build
+```
+
 
 ## Build Setup
 
@@ -45,20 +58,3 @@ npm run build
 ```
 npm run lint
 ```
-
-## Contribution guide
-
-- Fork the repository
-- `npm install` or `yarn install`
-- Make changes
-- Open Pull Request
-
-For detailed explanation on how things work, checkout the [guide](https://github.com/vuejs/vue-cli/blob/dev/docs/README.md)
-
-- [CHANGELOG](./CHANGELOG.md)
-- [version-badge](https://img.shields.io/badge/version-1.0.1-blue.svg)
-- [license-badge](https://img.shields.io/badge/license-MIT-blue.svg)
-
-## License
-
-[MIT](https://github.com/creativetimofficial/vue-paper-dashboard/blob/master/LICENSE.md)
