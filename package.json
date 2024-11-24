@@ -1,5 +1,5 @@
 {
-  "name": "vue-paper-dashboard",
+  "name": "vue-zigg-dashboard",
   "version": "1.0.1",
   "private": true,
   "scripts": {
@@ -29,7 +29,7 @@
     "sass-loader": "10.2.0",
     "vue-template-compiler": "2.7.14"
   },
-  "description": "A sample admin dashboard based on paper dashboard UI template",
+  "description": "A sample admin dashboard based on zigg dashboard UI template",
   "author": "cristian.jora <joracristi@gmail.com>",
   "engines": {
     "node": ">= 8.1.4",
