@@ -13,44 +13,37 @@
                 />
               </div>
             </div>
-            <div class="col-6">
+            <div class="col-9">
               <span>{{ household.name }}</span>
               <br />
               <span :class="getStatusClass(household.status)">
                 <small>{{ household.status }}</small>
               </span>
             </div>
-            <div class="col-3">
-              <button @click="openEditModal(household)" class="btn btn-success">
-                <i class="fa fa-edit"></i>
-              </button>
-            </div>
           </div>
         </li>
       </ul>
     </div>
     <div class="text-center mt-3">
-      <button @click="openInviteModal()" class="btn btn-primary">
+      <button @click="openInviteModal" class="btn btn-primary">
         Invite Household Member
       </button>
     </div>
+    <!-- Ensure the InviteModal is toggled correctly -->
     <invite-modal v-if="showInviteModal" @close="showInviteModal = false" />
-    <edit-household-modal v-if="showEditModal" :household="currentHousehold" @close="showEditModal = false" />
   </card>
 </template>
 
 <script>
 import InviteModal from './components/invite-modal.vue';
-import EditHouseholdModal from './components/edit-household-modal.vue';
 
 export default {
   components: {
-    InviteModal,
-    EditHouseholdModal
+    InviteModal
   },
   data() {
     return {
-      title: "Households",
+      title: "Household members",
       households: [
         {
           image: require("@/assets/img/faces/face-0.jpg"),
@@ -68,9 +61,7 @@ export default {
           status: "Busy",
         },
       ],
-      showInviteModal: false,
-      showEditModal: false,
-      currentHousehold: null,
+      showInviteModal: false
     };
   },
   methods: {
@@ -88,18 +79,13 @@ export default {
     },
     openInviteModal() {
       this.showInviteModal = true;
-    },
-    openEditModal(household) {
-      console.log('Edit button clicked', household, household.name, household.status);
-      this.currentHousehold = household;
-      this.showEditModal = true;  
-    },
+    }
   },
 };
 </script>
 
 <style>
-
-
-
+.avatar img {
+  width: 100%; /* Ensures the avatar images are fully responsive within their container */
+}
 </style>

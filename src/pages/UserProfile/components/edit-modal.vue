@@ -1,18 +1,45 @@
 <template>
   <div v-if="isVisible" class="modal-overlay" @click.self="closeModal">
-    <card class="card" title="Invite New Member">
-      <form @submit.prevent="sendInvite" class="form">
+    <card class="card" title="Edit Household Information">
+      <form @submit.prevent="updateProfile" class="form">
         <div class="row">
           <fg-input
-            type="email"
-            label="Email Address"
-            placeholder="Enter email address"
-            v-model="email"
+            type="text"
+            label="Household Name"
+            placeholder="FamilyName"
+            v-model="user.company"
+          >
+          </fg-input>
+        </div>
+        <div class="row">
+          <fg-input
+            type="text"
+            label="Address"
+            placeholder="Home Address"
+            v-model="user.address"
+          >
+          </fg-input>
+        </div>
+        <div class="row">
+          <fg-input
+            type="text"
+            label="City"
+            placeholder="City"
+            v-model="user.city"
+          >
+          </fg-input>
+        </div>
+        <div class="row">
+          <fg-input
+            type="number"
+            label="Postal Code"
+            placeholder="ZIP Code"
+            v-model="user.postalCode"
           >
           </fg-input>
         </div>
         <div class="button-group text-center">
-          <button class="update-btn" @click="sendInvite">Send Invite</button>
+          <button class="update-btn" @click="updateProfile">Update Profile</button>
           <button class="close-btn" @click="closeModal">Close</button>
         </div>
       </form>
@@ -24,23 +51,25 @@
 export default {
   data() {
     return {
-      email: '',
       isVisible: false,
+      user: {
+        company: "",
+        address: "",
+        city: "",
+        postalCode: ""
+      },
     };
   },
   methods: {
-    sendInvite() {
-      if (this.email) {
-        alert(`Invite sent to ${this.email}`);  // Placeholder for actual invite logic
-        this.email = ''; // Clear the input after sending the invite
-        this.closeModal(); // Close the modal after sending the invite
-      } else {
-        alert("Please enter a valid email address."); // Basic validation feedback
-      }
+    openModal() {
+      this.isVisible = true;
     },
     closeModal() {
       this.isVisible = false;
-      this.$emit('close'); // Emit close event to handle more actions in the parent component
+    },
+    updateProfile() {
+      alert(`Profile Updated: ${JSON.stringify(this.user)}`);
+      this.closeModal();
     }
   }
 };
