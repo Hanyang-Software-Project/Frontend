@@ -6,7 +6,14 @@
 </template>
 
 <script>
-export default {};
+import GlobalLayout from './layout/GlobalyLayout.vue';
+
+export default {
+  name: 'App',
+  components: {
+    GlobalLayout
+  }
+}
 </script>
 
 <style lang="scss">

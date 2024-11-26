@@ -51,9 +51,6 @@
               </tr>
             </tbody>
           </table>
-          <span slot="footer">
-            <i class="ti-reload"></i> Updated 3 minutes ago
-          </span>
         </table-card>
       </div>
 
@@ -75,16 +72,14 @@
   </div>
 </template>
 <script>
-import { StatsCard, ChartCard, TableCard } from "@/components/index";
+import { StatsCard, TableCard } from "@/components/index";
 import Chartist from "chartist";
+
 export default {
   components: {
     StatsCard,
     TableCard,
   },
-  /**
-   * Chart data used to render stats, charts. Should be replaced with server data
-   */
   data() {
     return {
       tableCard: {
@@ -129,7 +124,7 @@ export default {
         {
           type: "success",
           icon: "ti-wallet",
-          title: "Household-Devices",
+          title: "Household Devices",
           value: "5",
           footerText: "Add Device",
           footerIcon: "ti-reload",
@@ -150,7 +145,7 @@ export default {
           room: "Living Room",
           device: "Air Conditioner",
           time: "14:35",
-          status: "warning" // Represents yellow color
+          status: "warning", // Represents yellow color
         },
         {
           id: 2,
@@ -158,7 +153,7 @@ export default {
           room: "Kitchen",
           device: "Refrigerator",
           time: "09:20",
-          status: "danger" // Represents red color
+          status: "danger", // Represents red color
         },
         {
           id: 3,
@@ -166,48 +161,30 @@ export default {
           room: "Bedroom",
           device: "Lamp",
           time: "23:15",
-          status: "success" // Represents green color
+          status: "success", // Represents green color
         },
       ],
-      
+      // Add the missing activityChart data
       activityChart: {
         data: {
-          labels: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "Mai",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          series: [
-            [542, 543, 520, 680, 653, 753, 326, 434, 568, 610, 756, 895],
-            [230, 293, 380, 480, 503, 553, 600, 664, 698, 710, 736, 795],
-          ],
+          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+          series: [[5, 10, 15, 20, 25, 30, 35, 40]],
         },
         options: {
-          seriesBarDistance: 10,
+          low: 0,
+          showArea: true,
+          height: "245px",
           axisX: {
             showGrid: false,
           },
-          height: "245px",
+          lineSmooth: Chartist.Interpolation.simple({
+            divisor: 2,
+          }),
         },
-      },
-      preferencesChart: {
-        data: {
-          labels: ["62%", "32%", "6%"],
-          series: [62, 32, 6],
-        },
-        options: {},
       },
     };
   },
 };
 </script>
+
 <style></style>
