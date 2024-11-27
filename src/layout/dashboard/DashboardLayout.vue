@@ -4,11 +4,8 @@
       <template slot="links">
         <sidebar-link to="/dashboard" name="Dashboard" icon="ti-panel" />
         <sidebar-link to="/stats" name="Household" icon="ti-user" />
-        <sidebar-link
-          to="/table-list"
-          name="Table List"
-          icon="ti-view-list-alt"
-        />
+        <sidebar-link to="/devices" name="Devices" icon="ti-microphone" />
+
         <sidebar-link to="/notifications" name="Notifications" icon="ti-bell" />
       </template>
       <mobile-menu>
