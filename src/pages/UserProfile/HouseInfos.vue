@@ -94,15 +94,15 @@
       </div>
       <div class="clearfix"></div>
     </div>
-    <edit-modal ref="editModal" />
+    <edit-house-infos-modal ref="editHouseInfosModal" />
   </card>
 </template>
 
 <script>
-  import EditModal from './components/edit-modal.vue';
+  import EditHouseInfosModal from './components/edit-house-infos-modal.vue';
   export default {
     components: {
-      EditModal
+      EditHouseInfosModal
     },
     data() {
       return {
@@ -120,7 +120,7 @@
     },
     methods: {
       openModal() {
-        this.$refs.editModal.openModal();
+        this.$refs.editHouseInfosModal.openModal();
       }
     },
   };
