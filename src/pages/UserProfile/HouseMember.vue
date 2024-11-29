@@ -1,5 +1,5 @@
 <template>
-  <card class="card" :title="title">
+  <card class="card" title="Household Information">
     <div>
       <ul class="list-unstyled team-households">
         <li v-for="household in households" :key="household.name">
@@ -25,25 +25,25 @@
       </ul>
     </div>
     <div class="text-center mt-3">
-      <button @click="openInviteModal" class="btn btn-primary">
-        Invite Household Member
+      <button @click="openEditModal" class="btn btn-primary">
+        Edit Household Member
       </button>
     </div>
-    <!-- Ensure the InviteModal is toggled correctly -->
-    <invite-modal v-if="showInviteModal" @close="showInviteModal = false" />
+    <!-- Ensure the EditHouseMemberModal is toggled correctly -->
+    <edit-house-member-modal ref="editHouseInfosModal" />
   </card>
 </template>
 
 <script>
-import InviteModal from './components/invite-modal.vue';
+import EditHouseMemberModal from './components/edit-house-members-modal.vue';
 
 export default {
   components: {
-    InviteModal
+    EditHouseMemberModal
   },
   data() {
     return {
-      title: "Household members",
+      title: "Household Members",
       households: [
         {
           image: require("@/assets/img/faces/face-0.jpg"),
@@ -61,14 +61,13 @@ export default {
           status: "Busy",
         },
       ],
-      showInviteModal: false
     };
   },
   methods: {
     getStatusClass(status) {
       switch (status) {
         case "Offline":
-          return "text-muted";
+          return "text-muted";  
         case "Available":
           return "text-success";
         case "Busy":
@@ -77,8 +76,8 @@ export default {
           return "text-primary";
       }
     },
-    openInviteModal() {
-      this.showInviteModal = true;
+    openEditModal() {
+      this.$refs.editHouseInfosModal.isVisible = true;
     }
   },
 };
@@ -88,4 +87,5 @@ export default {
 .avatar img {
   width: 100%; /* Ensures the avatar images are fully responsive within their container */
 }
+
 </style>

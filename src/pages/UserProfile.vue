@@ -18,4 +18,17 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+modal-overlay {
+  z-index: 1050; /* Bootstrap's modal z-index starts around 1040 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+</style>
