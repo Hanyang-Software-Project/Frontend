@@ -1,23 +1,20 @@
 <template>
   <div class="row">
     <div class="col-xl-4 col-lg-5 col-md-6">
- <!--     <user-card> </user-card>  -->
-      <house-card> </house-card>
+      <house-member> </house-member>
     </div>
     <div class="col-xl-8 col-lg-7 col-md-6">
-      <edit-profile-form> </edit-profile-form>
+      <house-infos> </house-infos>
     </div>
   </div>
 </template>
 <script>
-import EditProfileForm from "./UserProfile/EditProfileForm.vue";
-import UserCard from "./UserProfile/UserCard.vue";
-import HouseCard from "./UserProfile/HouseCard.vue";
+import HouseInfos from "./UserProfile/HouseInfos.vue";
+import HouseMember from "./UserProfile/HouseMember.vue";
 export default {
   components: {
-    EditProfileForm,
-    UserCard,
-    HouseCard,
+    HouseInfos,
+    HouseMember,
   },
 };
 </script>
