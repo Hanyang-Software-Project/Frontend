@@ -3,13 +3,13 @@
       <div class="modal">
         <h4>Add Device</h4>
         <input 
-          :value="newDeviceName"
-          @input="$emit('update-name', $event.target.value)"
+          type="text"
           placeholder="Enter device name" 
           class="form-control"
+          v-model="newDeviceName"
         />
         <div class="modal-actions">
-          <button @click="$emit('add-device')">Add</button>
+          <button @click="confirmAddDevice">Add</button>
           <button @click="closeModal">Cancel</button>
         </div>
       </div>
@@ -18,10 +18,10 @@
   
   <script>
   export default {
-    props: ['newDeviceName'],
     data() {
       return {
         isVisible: false,
+        newDeviceName: "",
       };
     },
     methods: {
@@ -30,8 +30,39 @@
       },
       closeModal() {
         this.isVisible = false;
+        this.newDeviceName = ""; // Reset the input field on modal close.
       },
-    },
+      confirmAddDevice() {
+        this.$emit('add-device', this.newDeviceName);
+        this.closeModal();
+      }
+    }
   };
   </script>
+  
+  <style scoped>
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+  }
+  .modal-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  </style>
   

@@ -54,20 +54,7 @@
         </table-card>
       </div>
 
-      <div class="col-md-6 col-12">
-        <chart-card
-          title="2015 Sales"
-          sub-title="All products including Taxes"
-          :chart-data="activityChart.data"
-          :chart-options="activityChart.options"
-        >
-          <span slot="footer">
-            <i class="ti-check"></i> Data information certified
-          </span>
-          <div slot="legend">
-          </div>
-        </chart-card>
-      </div>
+      
     </div>
   </div>
 </template>

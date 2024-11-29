@@ -1,14 +1,12 @@
 <template>
   <div class="row">
     <div class="col-xl-4 col-lg-5 col-md-6">
-      <!-- Add Device Section -->
       <div class="add-device-box" @click="openModal">
         <i class="big-plus-icon">+</i>
         <p>Add New Device</p>
       </div>
     </div>
     <div class="col-xl-8 col-lg-7 col-md-6">
-      <!-- List of Devices -->
       <div class="device-list">
         <div 
           class="device-box" 
@@ -19,14 +17,7 @@
         </div>
       </div>
     </div>
-    <!-- Add Device Modal -->
-    <add-device-modal
-      ref="addDeviceModal"
-      :new-device-name="newDeviceName"
-      @update-name="updateDeviceName"
-      @add-device="addDevice"
-      @close="closeModal"
-    />
+    <add-device-modal ref="addDeviceModal"/>
   </div>
 </template>
 
@@ -40,7 +31,6 @@ export default {
   data() {
     return {
       devices: [],
-      newDeviceName: "",
     };
   },
   methods: {
@@ -50,18 +40,14 @@ export default {
     closeModal() {
       this.$refs.addDeviceModal.closeModal();
     },
-    addDevice() {
-      if (this.newDeviceName.trim()) {
+    addDevice(name) {
+      if (name.trim()) {
         this.devices.push({
           id: Date.now(),
-          name: this.newDeviceName,
+          name: name,
         });
-        this.closeModal(); // Close modal after adding
-        this.newDeviceName = ""; // Clear input field
+        this.closeModal();
       }
-    },
-    updateDeviceName(name) {
-      this.newDeviceName = name;
     },
   },
 };
@@ -97,28 +83,5 @@ export default {
   border-radius: 8px;
   padding: 10px 20px;
   text-align: center;
-}
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.modal {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 300px;
-  text-align: center;
-}
-.modal-actions {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
 }
 </style>
