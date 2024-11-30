@@ -8,7 +8,7 @@
             <LabelledInput input-type="password" label="Password" input-place-holder="**********" v-model="password"/>
         </FormComponent>
         <div class="loginLink">
-          <RouterLink :to="{name: 'signinPage'}">Create account</RouterLink>
+          <router-link :to="{name: 'signinPage'}">Create account</router-link>
         </div>
       </div>
 </template>
@@ -30,7 +30,7 @@ export default{
   },
   methods: {
     onLoginFormSubmit(){
-      this.$router.push('dashboard')
+      this.$router.push({name: 'dashboardLayout'})
       return;
       const body = {
         email: emailOrId.value,

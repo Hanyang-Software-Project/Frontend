@@ -9,12 +9,16 @@ import Notifications from "@/pages/Notifications.vue";
 import Maps from "@/pages/Maps.vue";
 import Typography from "@/pages/Typography.vue";
 import TableList from "@/pages/TableList.vue";
+import Login from "@/pages/Login.vue";
 
 const routes = [
+
+  { path: "/", component: Login, name: 'loginPage'},
   {
-    path: "/",
+    path: "/app",
     component: DashboardLayout,
-    redirect: "/dashboard",
+    redirect: "/app/dashboard",
+    name: "dashboardLayout",
     children: [
       {
         path: "dashboard",
