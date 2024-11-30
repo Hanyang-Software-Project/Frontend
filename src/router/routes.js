@@ -28,8 +28,8 @@ const routes = [
         component: Dashboard,
       },
       {
-        path: "stats",
-        name: "stats",
+        path: "household",
+        name: "household",
         component: UserProfile,
       },
       {

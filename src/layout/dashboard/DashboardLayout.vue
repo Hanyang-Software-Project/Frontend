@@ -2,14 +2,14 @@
   <div class="wrapper">
     <side-bar>
       <template slot="links">
-        <sidebar-link to="/dashboard" name="Dashboard" icon="ti-panel" />
-        <sidebar-link to="/stats" name="Household" icon="ti-user" />
+        <sidebar-link to="/app/dashboard" name="Dashboard" icon="ti-panel" />
+        <sidebar-link to="/app/household" name="Household" icon="ti-user" />
         <sidebar-link
-          to="/table-list"
+          to="/app/table-list"
           name="Table List"
           icon="ti-view-list-alt"
         />
-        <sidebar-link to="/notifications" name="Notifications" icon="ti-bell" />
+        <sidebar-link to="/app/notifications" name="Notifications" icon="ti-bell" />
       </template>
       <mobile-menu>
         <li class="nav-item">
