@@ -28,12 +28,4 @@ export default {
         }
     }
 }
-
-/*interface Props{
-    label: string,
-    inputType: string,
-    inputPlaceHolder: string
-}
-const props = defineProps<Props>()
-const model = defineModel()*/
 </script>

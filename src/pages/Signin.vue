@@ -54,28 +54,4 @@ export default{
     }
   }
 }
-
-/* const email : Ref<string> = ref('')
-const username : Ref<string> = ref('')
-const password : Ref<string> = ref('')
-
-const onSigninFormSubmit = () : void => {
-    const body : {email: string, username: string ,password: string} = {
-      email: email.value,
-      username: username.value,
-      password: password.value
-    }
-    fetch('http://192.168.232.128/signup.php', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(body)
-    })
-    .then(res => res.json())
-    .then(jsonRes => {
-      console.log(jsonRes)
-      if(jsonRes.code == 201) window.location.href = "http://localhost:5173/"
-
-      else console.log(jsonRes)
-    })
-}*/
 </script>
