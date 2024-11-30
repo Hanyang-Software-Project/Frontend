@@ -30,8 +30,8 @@ export default{
   methods: {
     onLoginFormSubmit(){
       const body = {
-        email: emailOrId.value,
-        password: password.value
+        email: this.emailOrId,
+        password: this.password
       }
       fetch('http://localhost:8080/login', {
         method: 'POST',
@@ -44,6 +44,9 @@ export default{
           this.$router.push('dashboardLayout')
         else
           console.log("Err : " + jsonRes)
+      })
+      .catch(_ => {
+        console.log('error during login')
       })
     }
   }

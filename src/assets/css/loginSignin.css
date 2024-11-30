@@ -3,7 +3,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 15vh;
     width: 100%;
 }
 
@@ -26,4 +25,8 @@
 .formComponentBtn{
     position: relative;
     z-index: 2;
+}
+
+#loginForm{
+    margin-top: 15vh;
 }

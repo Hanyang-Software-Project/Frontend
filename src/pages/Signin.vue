@@ -37,13 +37,13 @@ export default{
   methods: {
     onSigninFormSubmit(){
       const body = {
-        email: email.value,
-        username: username.value,
-        password: password.value,
-        phoneNumber: phone.value,
+        email: this.email,
+        username: this.username,
+        password: this.password,
+        phoneNumber: this.phone,
         house: {
-          houseName: houseName.value,
-          address: address.value
+          houseName: this.houseName,
+          address: this.address
         }
       }
 
@@ -58,6 +58,9 @@ export default{
           this.$router.push({name: 'loginPage'})
         else
           console.log('error: ' + jsonRes)
+      })
+      .catch(_ => {
+        console.log('Signin error')
       })
     }
   }
