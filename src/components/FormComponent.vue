@@ -3,7 +3,7 @@
         <h1 class="mb-5" id="formComponentTitle">{{ title }}</h1>
         <form action="" @submit.prevent="onSubmit">
             <slot></slot>
-            <button class="btn btn-primary">{{ submitText }}</button>
+            <button class="btn btn-primary formComponentBtn">{{ submitText }}</button>
         </form>
     </div>
 </template>
@@ -15,12 +15,6 @@
             onSubmit: Function
         }
     }
-    /*interface Props{
-        title: string,
-        submitText: string,
-        onSubmit: () => void
-    }
-    const props = defineProps<Props>()*/
 </script>
 
 <style>
