@@ -1,5 +1,5 @@
 <template>
-    <div id="loginForm" class="loginSigninForms">
+    <div id="loginForm" class="formContainer">
         <FormComponent
         title="Login" submit-text="Login"
         :onSubmit="onLoginFormSubmit"
@@ -15,7 +15,7 @@
 <script>
 import FormComponent from '@/components/FormComponent.vue';
 import LabelledInput from '@/components/Inputs/LabelledInput.vue';
-import '@/assets/css/loginSignin.css';
+//import '@/assets/css/loginSignin.css';
 
 export default{
   components: {
