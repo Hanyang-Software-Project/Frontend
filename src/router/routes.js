@@ -10,11 +10,12 @@ import Maps from "@/pages/Maps.vue";
 import Typography from "@/pages/Typography.vue";
 import TableList from "@/pages/TableList.vue";
 import Login from "@/pages/Login.vue";
+import Signin from "@/pages/Signin.vue";
 
 const routes = [
   { path: "/", redirect: {name: 'loginPage'}, name: 'root'},
   { path: "/login", component: Login, name: 'loginPage'},
-  //{ path: "/signin", component: Signin, name: 'signinPage'},
+  { path: "/signin", component: Signin, name: 'signinPage'},
   {
     path: "/app",
     component: DashboardLayout,
