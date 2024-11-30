@@ -12,8 +12,9 @@ import TableList from "@/pages/TableList.vue";
 import Login from "@/pages/Login.vue";
 
 const routes = [
-
-  { path: "/", component: Login, name: 'loginPage'},
+  { path: "/", redirect: {name: 'loginPage'}, name: 'root'},
+  { path: "/login", component: Login, name: 'loginPage'},
+  //{ path: "/signin", component: Signin, name: 'signinPage'},
   {
     path: "/app",
     component: DashboardLayout,
