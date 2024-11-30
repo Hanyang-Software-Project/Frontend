@@ -29,23 +29,19 @@ export default{
   },
   methods: {
     onLoginFormSubmit(){
-      this.$router.push({name: 'dashboardLayout'})
-      return;
       const body = {
         email: emailOrId.value,
         password: password.value
       }
-      fetch('http://192.168.232.128/login.php', {
+      fetch('http://localhost:8080/login', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(body)
       })
       .then(res => res.json())
       .then(jsonRes => {
-        console.log("Response :")
-        console.log(jsonRes)
         if(jsonRes.code == 200)
-          this.$router.push('dashboardSucess')
+          this.$router.push('dashboardLayout')
         else
           console.log("Err : " + jsonRes)
       })
