@@ -2,23 +2,16 @@
   <card class="card" title="Household Information">
     <div>
       <ul class="list-unstyled team-households">
-        <li v-for="household in households" :key="household.name">
+        <li v-for="user in users" :key="user.username">
           <div class="row">
             <div class="col-3">
-              <div class="avatar">
-                <img
-                  :src="household.image"
-                  alt="Household Member"
-                  class="rounded img-fluid"
-                />
-              </div>
+              <span>{{ user.name }} </span>
             </div>
-            <div class="col-9">
-              <span>{{ household.name }}</span>
-              <br />
-              <span :class="getStatusClass(household.status)">
-                <small>{{ household.status }}</small>
-              </span>
+            <div class="col-3">
+              <span>{{ user.username }} </span>
+            </div>
+            <div class="col-5">
+              <span>{{ user.email }}</span>
             </div>
           </div>
         </li>
@@ -35,6 +28,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import EditHouseMemberModal from './components/edit-house-members-modal.vue';
 
 export default {
@@ -43,42 +37,63 @@ export default {
   },
   data() {
     return {
-      title: "Household Members",
-      households: [
-        {
-          image: require("@/assets/img/faces/face-0.jpg"),
-          name: "Mother",
-          status: "Offline",
-        },
-        {
-          image: require("@/assets/img/faces/face-1.jpg"),
-          name: "Father",
-          status: "Available",
-        },
-        {
-          image: require("@/assets/img/faces/face-2.jpg"),
-          name: "Son",
-          status: "Busy",
-        },
-      ],
+      householdId: 3, // Example household ID to query
+      users: [], // This will store user data fetched from the API
     };
   },
   methods: {
-    getStatusClass(status) {
-      switch (status) {
-        case "Offline":
-          return "text-muted";  
-        case "Available":
-          return "text-success";
-        case "Busy":
-          return "text-danger";
-        default:
-          return "text-primary";
-      }
+    fetchHousehold() {
+      axios.get(`http://localhost:8080/house/user/${this.householdId}`)
+        .then(response => {
+          console.log("API Response:", response.data); // Log the received household data
+          // Check if the response data is an array and has at least one element
+          if (Array.isArray(response.data) && response.data.length > 0) {
+            const household = response.data[0]; // Get the first household object
+            console.log("First household data:", household);
+            if (household && Array.isArray(household.users)) {
+              const userIds = household.users.map(user => user.userId);
+              console.log("User IDs extracted from household:", userIds);
+              this.fetchUserDetails(userIds);
+            } else {
+              console.error('No users found in the household:', household);
+            }
+          } else {
+            console.error('Unexpected response structure or empty response:', response.data);
+          }
+        })
+        .catch(error => {
+          console.error('There was an error fetching the household:', error);
+        });
     },
+
+
+
+    fetchUserDetails(userIds) {
+      userIds.forEach(userId => {
+        axios.get(`http://localhost:8080/users/userDTO/${userId}`)
+          .then(response => {
+            console.log(`Data received for user ID ${userId}:`, response.data);
+            this.users.push({
+              id: response.data.id,
+              username: response.data.username,
+              email: response.data.email,
+              createdAt: response.data.createdAt
+            });
+          })
+          .catch(error => {
+            console.error(`Error fetching user details for user ID ${userId}:`, error);
+          });
+      });
+    },
+
     openEditModal() {
-      this.$refs.editHouseInfosModal.isVisible = true;
+      console.log("Opening edit modal");
+      this.$refs.editHouseInfosModal.openModal();
     }
+  },
+  created() {
+    console.log("Component created, starting to fetch household");
+    this.fetchHousehold(); // Load users, either from mock data or an API call
   },
 };
 </script>
@@ -87,5 +102,4 @@ export default {
 .avatar img {
   width: 100%; /* Ensures the avatar images are fully responsive within their container */
 }
-
 </style>

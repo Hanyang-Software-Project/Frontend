@@ -127,13 +127,4 @@
 </script>
 
 <style>
-.card {
-  width: 90%;
-  max-width: 600px;
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  z-index: 0; /* Bootstrap's modal z-index starts around 1040 */
-}
 </style>

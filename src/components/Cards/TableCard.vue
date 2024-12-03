@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="table-card">
       <!-- Header Section -->
       <div class="card-header">
         <h4 class="card-title">{{ title }}</h4>

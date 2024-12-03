@@ -151,24 +151,7 @@ export default {
           status: "success", // Represents green color
         },
       ],
-      // Add the missing activityChart data
-      activityChart: {
-        data: {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
-          series: [[5, 10, 15, 20, 25, 30, 35, 40]],
-        },
-        options: {
-          low: 0,
-          showArea: true,
-          height: "245px",
-          axisX: {
-            showGrid: false,
-          },
-          lineSmooth: Chartist.Interpolation.simple({
-            divisor: 2,
-          }),
-        },
-      },
+      
     };
   },
 };

@@ -249,3 +249,49 @@
     border-radius: 4px;
   }
 }
+
+
+// POPUP CARD
+.card-popup {
+  @extend .card; // Inherit properties from `.card`
+  z-index: 1040; // Ensure it is higher than most other elements
+  position: fixed; // Make it fixed relative to the viewport
+  top: 50%; // Center vertically
+  left: 50%; // Center horizontally
+  transform: translate(-50%, -50%); // Adjust to center precisely
+  width: 80%; // Set to a reasonable width for popups
+  max-width: 600px; // Limit maximum width
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); // Stronger shadow for emphasis
+  border-radius: 10px; // Optionally more rounded
+  overflow: hidden; // Ensure nothing spills out
+  background-color: #FFFFFF; // Typically, popups have a light background
+  padding: 20px; // Add more padding for content
+
+  // Ensure the content is scrolled if too long
+  .card-body {
+    max-height: 70vh; // 70% of the viewport height
+    overflow-y: auto; // Allow vertical scrolling
+  }
+
+  // Special styling for headers in popups
+  .card-header {
+    background-color: #f7f7f7; // Slightly different background for the header
+    padding: 15px 20px; // Suitable padding for headers
+    border-bottom: 1px solid #eee; // A subtle bottom border
+  }
+  
+  // Add animation for appearing
+  @keyframes popup-appear {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -60%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  animation: popup-appear 0.3s ease-out; // Apply animation
+}
+

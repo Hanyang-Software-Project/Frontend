@@ -1,6 +1,6 @@
 <template>
   <div v-if="isVisible" class="modal-overlay" @click.self="closeModal">
-    <card class="card" title="Edit Household Information">
+    <card class="alert" title="Edit Household Information">
       <form @submit.prevent="updateProfile" class="form">
         <div class="row">
           <fg-input
