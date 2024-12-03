@@ -93,6 +93,8 @@ export default {
     },
     removeDevice(){
       console.log('TODO: remove device ' + this.currentDevice.id)
+      this.devices = this.devices.filter(device => device.id !== this.currentDevice.id)
+      this.showDeviceModalOpened = false
     }
   },
 };
