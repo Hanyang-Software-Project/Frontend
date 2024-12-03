@@ -4,12 +4,12 @@
         title="Create account" submit-text="Sign in"
         :onSubmit="onSigninFormSubmit"
         >
-            <LabelledInput input-type="text" label="Username" input-place-holder="myUsername" v-model="username" />
-            <LabelledInput input-type="text" label="Email" input-place-holder="myaddress@mail.com" v-model="email"/>
-            <LabelledInput input-type="password" label="Password" input-place-holder="**********" v-model="password"/>
-            <LabelledInput input-type="text" label="Phone number" input-place-holder="0123456789" v-model="phone"/>
-            <LabelledInput input-type="text" label="House name" input-place-holder="My Home" v-model="houseName"/>
-            <LabelledInput input-type="text" label="House address" input-place-holder="221B Baker Street, London" v-model="address"/>
+            <LabelledInput input-type="text" label="Username" input-place-holder="myUsername" @update:modelValue="username = $event" />
+            <LabelledInput input-type="text" label="Email" input-place-holder="myaddress@mail.com" @update:modelValue="email = $event"/>
+            <LabelledInput input-type="password" label="Password" input-place-holder="**********" @update:modelValue="password = $event"/>
+            <LabelledInput input-type="text" label="Phone number" input-place-holder="0123456789" @update:modelValue="phone = $event"/>
+            <LabelledInput input-type="text" label="House name" input-place-holder="My Home" @update:modelValue="houseName = $event"/>
+            <LabelledInput input-type="text" label="House address" input-place-holder="221B Baker Street, London" @update:modelValue="address = $event"/>
         </FormComponent>
         <div class="loginLink">
           <router-link :to="{name: 'loginPage'}">I already have an account</router-link>
