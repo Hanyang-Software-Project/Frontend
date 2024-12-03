@@ -7,7 +7,6 @@
         :type="inputType"
         :placeholder="inputPlaceHolder"
         @input="setModelValue($event.target.value)"
-        v-model="modelValue"
         :name="'input-' + label"
         class="form-control"
         />
