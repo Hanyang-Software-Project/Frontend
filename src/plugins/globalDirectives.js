@@ -10,13 +10,16 @@ const GlobalDirectives = {
 
     Vue.reqFetch = async (method, url, body, headers, onErr = (err) => console.log(err)) => {
       const req = {method: method}
-      if(body !== undefined) req.body = body
+      if(body !== undefined) req.body = JSON.stringify(body)
       if(headers !== undefined) req.headers = headers
 
       try{
         const res = await fetch(url, req);
-        const jsonRes = await res.json()
-        return jsonRes
+
+        if(res.ok)
+          return await res.json()
+        else
+          throw new Error(`Error : ${res.status} - ${await res.text()}`)
       } catch(err) {
         onErr(err)
       }
