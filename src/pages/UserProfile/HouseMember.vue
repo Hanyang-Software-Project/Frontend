@@ -5,7 +5,7 @@
         <li v-for="user in users" :key="user.username">
           <div class="row">
             <div class="col-3">
-              <span>{{ user.name }} </span>
+              <i class="ti-user large-icon"></i>
             </div>
             <div class="col-3">
               <span>{{ user.username }} </span>
@@ -45,10 +45,9 @@ export default {
     fetchHousehold() {
       axios.get(`http://localhost:8080/house/user/${this.householdId}`)
         .then(response => {
-          console.log("API Response:", response.data); // Log the received household data
-          // Check if the response data is an array and has at least one element
+          console.log("API Response:", response.data); 
           if (Array.isArray(response.data) && response.data.length > 0) {
-            const household = response.data[0]; // Get the first household object
+            const household = response.data[0]; 
             console.log("First household data:", household);
             if (household && Array.isArray(household.users)) {
               const userIds = household.users.map(user => user.userId);
@@ -98,8 +97,49 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .avatar img {
   width: 100%; /* Ensures the avatar images are fully responsive within their container */
 }
+.large-icon {
+  font-size: 35px;  /* You can adjust the size as needed */
+}
+/* Container styling */
+.team-households {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.team-households li {
+  border-bottom: 1px solid #e1e1e1; /* subtle bottom border for each item */
+  padding: 10px 0; /* vertical padding for spacing */
+  transition: background-color 0.3s; /* smooth transition for hover effect */
+}
+
+/* Row layout adjustments */
+.row {
+  align-items: center; /* vertically center the content in the row */
+}
+
+/* Icon styling */
+.large-icon {
+  font-size: 24px; /* larger icon */
+  color: #3498db; /* icon color */
+  vertical-align: middle; /* align icon vertically with text */
+}
+
+/* Username and email styles */
+.team-households span {
+  display: block; /* ensure each element appears on a new line */
+  color: #333; /* text color for better readability */
+  font-size: 14px; /* suitable font size */
+  padding-left: 10px; /* spacing from icon or other elements */
+}
+
+/* Hover effect for each list item */
+.team-households li:hover {
+  background-color: #f9f9f9; /* light grey background on hover */
+}
 </style>
+

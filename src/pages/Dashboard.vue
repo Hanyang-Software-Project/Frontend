@@ -61,6 +61,7 @@
 <script>
 import { StatsCard, TableCard } from "@/components/index";
 import Chartist from "chartist";
+import axios from 'axios';
 
 export default {
   components: {
@@ -69,6 +70,7 @@ export default {
   },
   data() {
     return {
+      householdId: 3, // Set as a default value, can be dynamic
       tableCard: {
         title: "Notifications",
         subTitle: "24 Hours notifications",
@@ -153,6 +155,32 @@ export default {
       ],
       
     };
+  },
+  methods: {
+    fetchHouseholdMembers() {
+      axios.get(`http://localhost:8080/house/user/${this.householdId}`)
+        .then(response => {
+          if (response.data.length > 0 && response.data[0].users) {
+            this.updateHouseholdMembersCount(response.data[0].users.length);
+          } else {
+            console.error('No users found in the household:', response.data);
+            this.updateHouseholdMembersCount(0); // Update with 0 if no users found
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching household members:", error);
+          this.updateHouseholdMembersCount(0); // Update with 0 in case of error
+        });
+    },
+    updateHouseholdMembersCount(memberCount) {
+      const memberCard = this.statsCards.find(card => card.title === "Household Members");
+      if (memberCard) {
+        memberCard.value = memberCount.toString(); // Update the count
+      }
+    }
+  },
+  created() {
+    this.fetchHouseholdMembers(); // Load household members on creation
   },
 };
 </script>
