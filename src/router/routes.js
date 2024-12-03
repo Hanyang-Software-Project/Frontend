@@ -7,12 +7,18 @@ import Dashboard from "@/pages/Dashboard.vue";
 import UserProfile from "@/pages/UserProfile.vue";
 import Notifications from "@/pages/Notifications.vue";
 import Devices from "../pages/Devices.vue";
+import Login from "@/pages/Login.vue";
+import Signin from "@/pages/Signin.vue";
 
 const routes = [
+  { path: "/", redirect: {name: 'loginPage'}, name: 'root'},
+  { path: "/login", component: Login, name: 'loginPage'},
+  { path: "/signin", component: Signin, name: 'signinPage'},
   {
-    path: "/",
+    path: "/app",
     component: DashboardLayout,
-    redirect: "/dashboard",
+    redirect: "/app/dashboard",
+    name: "dashboardLayout",
     children: [
       {
         path: "dashboard",
@@ -20,8 +26,8 @@ const routes = [
         component: Dashboard,
       },
       {
-        path: "stats",
-        name: "stats",
+        path: "household",
+        name: "household",
         component: UserProfile,
       },
       {

@@ -19,6 +19,7 @@ import router from "./router/index";
 
 import ziggDashboard from "./plugins/ziggDashboard";
 import "vue-notifyjs/themes/default.css";
+import "./assets/css/loginSignin.css";
 
 Vue.use(ziggDashboard);
 
