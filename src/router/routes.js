@@ -26,21 +26,25 @@ const routes = [
         path: "dashboard",
         name: "dashboard",
         component: Dashboard,
+        meta: {requiresAuth: true}
       },
       {
         path: "household",
         name: "household",
         component: UserProfile,
+        meta: {requiresAuth: true}
       },
       {
         path: "notifications",
         name: "notifications",
         component: Notifications,
+        meta: {requiresAuth: true}
       },
       {
         path: "devices",
         name: "devices",
         component: Devices,
+        meta: {requiresAuth: true}
       },
     ],
   },
