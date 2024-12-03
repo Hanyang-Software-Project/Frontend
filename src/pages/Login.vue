@@ -30,31 +30,34 @@ export default{
   },
   methods: {
     async onLoginFormSubmit(){
-      const body = {
-        email: this.emailOrId,
-        password: this.password
-      }
-      console.log(body)
-      const apiRes = await Vue.reqFetch(
-        'POST',
-        'http://localhost:8080/login',
-        body,
-        {'Content-Type': 'application/json'}
-      );
-      console.log(apiRes.message)
-      return;
+      try{
+        const body = {
+          email: this.emailOrId,
+          password: this.password
+        }
 
-      if(apiRes.code == 200){
-        firebaseRes = Vue.reqFetch(
+        const apiRes = await Vue.reqFetch(
+          'POST',
+          'http://localhost:8080/login',
+          body,
+          {'Content-Type': 'application/json'}
+        );
+
+        const firebaseRes = await Vue.reqFetch(
           'POST',
           'https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=AIzaSyB0UyaY6uyP7HX5H6kVpw_E1372_vTnYs4',
           {
-            token: apiRes.content,
+            token: apiRes.token,
             returnSecureToken: true
           },
           {'Content-Type': 'application/json'}
         );
-      } else console.log('Err on login', apiRes)
+
+        localStorage.setItem('authToken', firebaseRes.idToken)
+        this.$router.push({name: 'dashboardLayout'})
+      }catch(e){
+        console.log(e)
+      }
     },
       /*fetch('http://localhost:8080/login', {
         method: 'POST',

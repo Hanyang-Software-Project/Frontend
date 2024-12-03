@@ -8,7 +8,7 @@ const GlobalDirectives = {
   install(Vue) {
     Vue.directive("click-outside", vClickOutside);
 
-    Vue.reqFetch = async (method, url, body, headers, onErr = (err) => console.log(err)) => {
+    Vue.reqFetch = async (method, url, body, headers) => {
       const req = {method: method}
       if(body !== undefined) req.body = JSON.stringify(body)
       if(headers !== undefined) req.headers = headers
@@ -21,7 +21,7 @@ const GlobalDirectives = {
         else
           throw new Error(`Error : ${res.status} - ${await res.text()}`)
       } catch(err) {
-        onErr(err)
+        throw new Error(err)
       }
     }
   },
