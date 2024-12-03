@@ -19,6 +19,7 @@
 <script>
 import FormComponent from '@/components/FormComponent.vue';
 import LabelledInput from '@/components/Inputs/LabelledInput.vue';
+import Vue from 'vue';
 
 export default{
   components: {
@@ -35,7 +36,7 @@ export default{
     }
   },
   methods: {
-    onSigninFormSubmit(){
+    async onSigninFormSubmit(){
       const body = {
         email: this.email,
         username: this.username,
@@ -47,21 +48,17 @@ export default{
         }
       }
 
-      fetch('http://localhost:8080/users/create-user', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(body)
-      })
-      .then(res => res.json())
-      .then(jsonRes => {
-        if(jsonRes.code == 201)
-          this.$router.push({name: 'loginPage'})
-        else
-          console.log('error: ' + jsonRes)
-      })
-      .catch(_ => {
-        console.log('Signin error')
-      })
+      try{
+        await Vue.reqFetch(
+          'POST',
+          'http://localhost:8080/users/create-user',
+          {'Content-Type': 'application/json'},
+          body
+        );
+        this.$router.push({name: 'loginPage'})
+      } catch(e) {
+        console.log(e)
+      }
     }
   }
 }

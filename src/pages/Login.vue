@@ -39,18 +39,18 @@ export default{
         const apiRes = await Vue.reqFetch(
           'POST',
           'http://localhost:8080/login',
-          body,
-          {'Content-Type': 'application/json'}
+          {'Content-Type': 'application/json'},
+          body
         );
 
         const firebaseRes = await Vue.reqFetch(
           'POST',
           'https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=AIzaSyB0UyaY6uyP7HX5H6kVpw_E1372_vTnYs4',
+          {'Content-Type': 'application/json'},
           {
             token: apiRes.token,
             returnSecureToken: true
-          },
-          {'Content-Type': 'application/json'}
+          }
         );
 
         localStorage.setItem('authToken', firebaseRes.idToken)
@@ -58,23 +58,7 @@ export default{
       }catch(e){
         console.log(e)
       }
-    },
-      /*fetch('http://localhost:8080/login', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(body)
-      })
-      .then(res => res.json())
-      .then(jsonRes => {
-        if(jsonRes.code == 200)
-          this.$router.push('dashboardLayout')
-        else
-          console.log("Err : " + jsonRes)
-      })
-      .catch(_ => {
-        console.log('error during login')
-      })
-    },*/
+    }
   }
 }
 </script>
