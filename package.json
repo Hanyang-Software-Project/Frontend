@@ -16,6 +16,8 @@
     "chartist": "0.11.0",
     "es6-promise": "4.2.8",
     "eslint-plugin-vue": "^9.8.0",
+    "extendable-media-recorder": "^9.2.17",
+    "extendable-media-recorder-wav-encoder": "^7.0.121",
     "vue": "2.7.14",
     "vue-clickaway": "2.2.2",
     "vue-notifyjs": "0.3.0",

@@ -13,6 +13,9 @@
     </div>
 </template>
 <script>
+import { MediaRecorder, register } from 'extendable-media-recorder';
+import { connect } from 'extendable-media-recorder-wav-encoder';
+
     export default{
         data(){
             return {
@@ -25,14 +28,16 @@
         mounted(){
             this.stream = null
             this.mediaRecorder = null
-            this.loopEnabled = true
             this.audioChunks = []
+            this.loopEnabled = true
         },
         methods: {
             async startRecording(){
                 try{
+                    await register(await connect())
+
                     this.stream = await navigator.mediaDevices.getUserMedia({audio: true})
-                    this.mediaRecorder = new MediaRecorder(this.stream)
+                    this.mediaRecorder = new MediaRecorder(this.stream, {mimeType: 'audio/wav'})
 
                     this.mediaRecorder.ondataavailable = event => {
                         this.audioChunks.push(event.data)
