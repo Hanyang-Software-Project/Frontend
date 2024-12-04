@@ -94,6 +94,8 @@ export default {
         const addedDevice = await this.saveDevice(hostDeviceName.trim())
 
         //TODO: Start listening in a new tab
+        const routeData = this.$router.resolve({name: 'recording'});
+        window.open(routeData.href, '_blank');
 
         this.devices.push(addedDevice)
         this.choiceModalOpened = false

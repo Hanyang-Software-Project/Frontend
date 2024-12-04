@@ -1,14 +1,14 @@
 <template>
-    <div>
-        <h1>Audio recording</h1>
-        <button :disabled="onAir" @click="startRecording">Start</button>
-        <button :disabled="!onAir" @click="stopRecording">Stop</button>
-        <!-- ul v-if="audioSrcArr != []">
-            <li v-for="src in audioSrcArr">
+    <div class="recorderContainer">
+        <h1 class="mb-5">Audio recording</h1>
+        <button type="button" class="btn btn-success mb-2" :disabled="onAir" @click="startRecording">Start</button>
+        <button type="button" class="btn btn-danger mt-2" :disabled="!onAir" @click="stopRecording">Stop</button>
+        <!--ul v-if="audioUrl != []">
+            <li v-for="src in audioUrl" :ref="src">
                 <audio controls :src="src"></audio>
             </li>
-        </ul -->
-        <audio v-if="audioSrc !== ''" controls :src="audioSrc"></audio>
+        </ul-->
+        <!-- audio v-if="audioSrc !== ''" controls :src="audioSrc"></audio -->
         <p v-if="onAir" id="onAirLight">• on air</p>
     </div>
 </template>
@@ -18,13 +18,15 @@
             return {
                 audioSrc: '',
                 audioSrcArr: [],
-                onAir: false
+                onAir: false,
+                audioUrl: []
             }
         },
-        async mounted(){
+        mounted(){
             this.stream = null
             this.mediaRecorder = null
-            this.audioChunks = [];
+            this.loopEnabled = true
+            this.audioChunks = []
         },
         methods: {
             async startRecording(){
@@ -39,10 +41,12 @@
 
                     this.mediaRecorder.onstop = _ => {
                         const audioBlob = new Blob(this.audioChunks, {type: "audio/ogg"})
-                        this.audioSrc = URL.createObjectURL(audioBlob)
+                        const audioLink = URL.createObjectURL(audioBlob)
+                        this.audioSrc = audioLink
+                        this.audioUrl.push(audioLink)
                         this.audioChunks = []
-                        this.onAir = false
-                        this.mediaRecorder.start(5000)
+                        if(this.loopEnabled) this.mediaRecorder.start(5000)
+                        console.log(this.audioUrl)
                     }
 
                     this.mediaRecorder.start(5000)
@@ -54,6 +58,7 @@
             },
 
             stopRecording(){
+                this.onAir = this.loopEnabled = false
                 this.mediaRecorder.stop()
             }
         },
@@ -68,5 +73,13 @@
 #onAirLight{
     color: red;
     font-weight: bold;
+}
+
+.recorderContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 90vh
 }
 </style>
