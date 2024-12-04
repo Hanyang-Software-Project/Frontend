@@ -42,10 +42,10 @@ export default{
           {'Content-Type': 'application/json'},
           body
         );
-
+        console.log()
         const firebaseRes = await Vue.reqFetch(
           'POST',
-          'https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=AIzaSyB0UyaY6uyP7HX5H6kVpw_E1372_vTnYs4',
+          'https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=' + process.env.VUE_APP_GOOGLE_API_KEY,
           {'Content-Type': 'application/json'},
           {
             token: apiRes.token,
