@@ -40,6 +40,7 @@
     </ModalLayout>
     <ModalLayout :visible="showDeviceModalOpened" :modalTitle="currentDevice.deviceName" @update:visible="showDeviceModalOpened = $event">
       <button type="button" class="btn btn-danger mr-2" @click="removeDevice">Remove Device</button>
+      <button type="button" class="btn btn-warning ml-2" @click="updateDevice">Change Name</button>
     </ModalLayout>
   </div>
 </template>
@@ -89,7 +90,6 @@ export default {
       const hostDeviceName = prompt("What is your new device name ?")
       if(!hostDeviceName || !hostDeviceName.trim()) return;
 
-      console.log('test')
       try{
         const addedDevice = await this.saveDevice(hostDeviceName.trim())
 
@@ -132,6 +132,26 @@ export default {
         this.showDeviceModalOpened = false
       } catch(e) {
         console.log('Removal err: ' + e);
+      }
+    },
+    async updateDevice(){
+      const newName = prompt("What is your device new name ?")
+      if(!newName || !newName.trim()) return;
+
+      try{
+        await Vue.reqFetch(
+          'PUT',
+          'http://localhost:8080/devices/' + this.currentDevice.deviceId,
+          {'Content-Type':'application/json', Authorization: this.authToken},
+          {
+            deviceName: newName.trim()
+          }
+        )
+
+        this.currentDevice.deviceName = newName
+        this.showDeviceModalOpened = false
+      } catch(e){
+        console.log(e)
       }
     }
   },
