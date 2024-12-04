@@ -59,18 +59,23 @@ export default {
       devices: [],
       choiceModalOpened: false,
       showDeviceModalOpened: false,
-      currentDevice: ''
+      currentDevice: {}
     };
   },
   async mounted(){
-    this.devices = await Vue.reqFetch(
-      'GET',
-      'http://localhost:8080/devices/user/' + localStorage.getItem('userId'),
-      {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-      }
-    );
+    try{
+      this.authToken = 'Bearer ' + localStorage.getItem('authToken')
+      this.devices = await Vue.reqFetch(
+        'GET',
+        'http://localhost:8080/devices/user/' + localStorage.getItem('userId'),
+        {
+          'Content-Type': 'application/json',
+          'Authorization': this.authToken
+        }
+      );
+    } catch(e) {
+      console.log(e)
+    }
   },
   methods: {
     openAddDeviceModal() {
@@ -93,10 +98,19 @@ export default {
       alert("Go to this link on the other device. [link]")
       this.choiceModalOpened = false
     },
-    removeDevice(){
+    async removeDevice(){
       console.log('TODO: remove device ' + this.currentDevice.deviceId)
-      this.devices = this.devices.filter(device => device.id !== this.currentDevice.deviceId)
-      this.showDeviceModalOpened = false
+      try{
+        await Vue.reqFetch(
+          'DELETE',
+          'http://localhost:8080/devices/' + this.currentDevice.deviceId,
+          {Authorization: this.authToken}
+        );
+        this.devices = this.devices.filter(device => device.deviceId !== this.currentDevice.deviceId)
+        this.showDeviceModalOpened = false
+      } catch(e) {
+        console.log('Removal err: ' + e);
+      }
     }
   },
 };
