@@ -11,9 +11,9 @@
       />
       <BasicCard
         v-for="device in devices"
-        :ref="device.id"
+        :ref="device.deviceId"
 
-        :textContent="device.name"
+        :textContent="device.deviceName"
         iconClass="ti-microphone"
         :onClick="() => openShowDeviceModal(device)"
         borderStyle="solid"
@@ -38,7 +38,7 @@
         />
       </div>
     </ModalLayout>
-    <ModalLayout :visible="showDeviceModalOpened" :modalTitle="currentDevice.name" @update:visible="showDeviceModalOpened = $event">
+    <ModalLayout :visible="showDeviceModalOpened" :modalTitle="currentDevice.deviceName" @update:visible="showDeviceModalOpened = $event">
       <button type="button" class="btn btn-danger" @click="removeDevice">Remove Device</button>
     </ModalLayout>
   </div>
@@ -47,6 +47,7 @@
 <script>
 import ModalLayout from '../layout/ModalLayout.vue';
 import BasicCard from '../components/Cards/BasicCard.vue';
+import Vue from 'vue';
 
 export default {
   components: {
@@ -55,20 +56,21 @@ export default {
   },
   data() {
     return {
-      devices: [
-        {id:1, name: 'device 1'}, 
-        {id:2, name: 'device 2'},
-        {id:3, name: 'device 3'},
-        {id:4, name: 'device 4'},
-        {id:5, name: 'device 5'},
-        {id:6, name: 'device 6'},
-        {id:7, name: 'device 7'},
-        {id:8, name: 'device 8'}
-      ],
+      devices: [],
       choiceModalOpened: false,
       showDeviceModalOpened: false,
       currentDevice: ''
     };
+  },
+  async mounted(){
+    this.devices = await Vue.reqFetch(
+      'GET',
+      'http://localhost:8080/devices/user/' + localStorage.getItem('userId'),
+      {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+      }
+    );
   },
   methods: {
     openAddDeviceModal() {
@@ -92,8 +94,8 @@ export default {
       this.choiceModalOpened = false
     },
     removeDevice(){
-      console.log('TODO: remove device ' + this.currentDevice.id)
-      this.devices = this.devices.filter(device => device.id !== this.currentDevice.id)
+      console.log('TODO: remove device ' + this.currentDevice.deviceId)
+      this.devices = this.devices.filter(device => device.id !== this.currentDevice.deviceId)
       this.showDeviceModalOpened = false
     }
   },
