@@ -10,10 +10,16 @@ const GlobalDirectives = {
 
     Vue.reqFetch = async (method, url, headers, body) => {
       const req = {method: method}
-      if(body !== undefined) req.body = JSON.stringify(body)
+      if(body !== undefined){
+        if(body instanceof FormData)
+          req.body = body
+        else
+          req.body = JSON.stringify(body)
+      }
       if(headers !== undefined) req.headers = headers
 
       try{
+        console.log(req)
         const res = await fetch(url, req);
 
         if(res.ok){

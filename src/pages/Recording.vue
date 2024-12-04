@@ -26,16 +26,16 @@ import Vue from 'vue';
                 audioUrl: []
             }
         },
-        mounted(){
+        async mounted(){
             this.stream = null
             this.mediaRecorder = null
             this.audioChunks = []
             this.loopEnabled = true
+            await register(await connect())
         },
         methods: {
             async startRecording(){
                 try{
-                    await register(await connect())
 
                     this.stream = await navigator.mediaDevices.getUserMedia({audio: true})
                     this.mediaRecorder = new MediaRecorder(this.stream, {mimeType: 'audio/wav'})
@@ -45,14 +45,17 @@ import Vue from 'vue';
                         this.mediaRecorder.stop()
                     }
 
-                    this.mediaRecorder.onstop = _ => {
-                        const audioBlob = new Blob(this.audioChunks, {type: "audio/ogg"})
-                        const audioLink = URL.createObjectURL(audioBlob)
+                    this.mediaRecorder.onstop = async _ => {
+                        const audioBlob = new Blob(this.audioChunks, {type: "audio/wav"})
+
+                        await this.sendAudiofile(audioBlob)
+
+                        /*const audioLink = URL.createObjectURL(audioBlob)
                         this.audioSrc = audioLink
-                        this.audioUrl.push(audioLink)
+                        this.audioUrl.push(audioLink)*/
+
                         this.audioChunks = []
                         if(this.loopEnabled) this.mediaRecorder.start(5000)
-                        console.log(this.audioUrl)
                     }
 
                     this.mediaRecorder.start(5000)
@@ -69,14 +72,26 @@ import Vue from 'vue';
             async sendAudiofile(wavBlob){
                 const formData = new FormData()
                 formData.append('file', wavBlob)
+                console.log(formData)
 
                 try{
-                    await Vue.reqFetch(
+                    const fileSaveRes = await Vue.reqFetch(
                         'POST',
                         'http://localhost:8080/files/upload',
-                        {'Content-Type': 'application/json'},
+                        {},
                         formData
                     );
+
+                    const res = await Vue.reqFetch(
+                        'POST',
+                        'http://localhost:8080/soundData',
+                        {'Content-Type': 'application/json'},
+                        {
+                            filePath: fileSaveRes.filePath,
+                            deviceId: '',//TODO,
+                            userId: localStorage.getItem('userId')
+                        }
+                    )
                 }catch(e){
                     console.log(e)
                 }
