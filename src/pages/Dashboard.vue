@@ -31,26 +31,38 @@
       <div class="col-12">
         <table-card
           title="Notifications"
-          sub-title="24 Hours notifications"
-        >
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Notification Type</th>
-                <th>Room Location</th>
-                <th>Device</th>
-                <th>Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in notifications" :key="item.id" :class="`text-${item.status}`">
-                <td>{{ item.type }}</td>
-                <td>{{ item.room }}</td>
-                <td>{{ item.device }}</td>
-                <td>{{ item.time }}</td>
-              </tr>
-            </tbody>
-          </table>
+          sub-title="24 Hours notifications">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Notification Type</th>
+              <th>Room Location</th>
+              <th>Device</th>
+              <th>Time</th>
+              <th>Alert</th> <!-- New column for alert button -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in notifications" :key="item.id" :class="`text-${item.status}`">
+              <td>{{ item.type }}</td>
+              <td>{{ item.room }}</td>
+              <td>{{ item.device }}</td>
+              <td>{{ item.time }}</td>
+              <td>
+                <button @click="openModal(item)" class="btn btn-warning">
+                  <i class="ti-alert"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <alarm-handling-modal
+          :isVisible="showModal"
+          :currentItem="currentItem"
+          @alarmHandled="processAlarm"
+          @update:isVisible="showModal = $event"
+        />
+
         </table-card>
       </div>
 
@@ -60,17 +72,21 @@
 </template>
 <script>
 import { StatsCard, TableCard } from "@/components/index";
-import Chartist from "chartist";
+import AlarmHandlingModal from '../layout/dashboard/AlarmHandlingModal.vue';
 import axios from 'axios';
 
 export default {
   components: {
     StatsCard,
     TableCard,
+    AlarmHandlingModal,
   },
   data() {
     return {
+      showModal: false,
+      currentItem: null,
       householdId: 3, // Set as a default value, can be dynamic
+
       tableCard: {
         title: "Notifications",
         subTitle: "24 Hours notifications",
@@ -122,7 +138,7 @@ export default {
           type: "danger",
           icon: "ti-pulse",
           title: "Errors",
-          value: "23",
+          value: "3",
           footerText: "In the last hour",
           footerIcon: "ti-timer",
         },
@@ -164,23 +180,31 @@ export default {
             this.updateHouseholdMembersCount(response.data[0].users.length);
           } else {
             console.error('No users found in the household:', response.data);
-            this.updateHouseholdMembersCount(0); // Update with 0 if no users found
+            this.updateHouseholdMembersCount(0); 
           }
         })
         .catch(error => {
           console.error("Error fetching household members:", error);
-          this.updateHouseholdMembersCount(0); // Update with 0 in case of error
+          this.updateHouseholdMembersCount(0); 
         });
     },
     updateHouseholdMembersCount(memberCount) {
       const memberCard = this.statsCards.find(card => card.title === "Household Members");
       if (memberCard) {
-        memberCard.value = memberCount.toString(); // Update the count
+        memberCard.value = memberCount.toString(); 
       }
+    },
+    created() {
+      this.fetchHouseholdMembers();
+    },
+    openModal(item) {
+      this.currentItem = item;
+      this.showModal = true;
+    },
+    processAlarm(data) {
+      console.log(`Alarm type: ${data.type} for item:`, data.item);
+      // Add any additional processing or state updates here
     }
-  },
-  created() {
-    this.fetchHouseholdMembers(); // Load household members on creation
   },
 };
 </script>

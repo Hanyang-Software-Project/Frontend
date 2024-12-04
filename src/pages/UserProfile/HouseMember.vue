@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      householdId: 3, // Example household ID to query
+      householdId:3, // Example household ID to query
       users: [], // This will store user data fetched from the API
     };
   },
