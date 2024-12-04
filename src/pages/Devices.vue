@@ -39,7 +39,7 @@
       </div>
     </ModalLayout>
     <ModalLayout :visible="showDeviceModalOpened" :modalTitle="currentDevice.deviceName" @update:visible="showDeviceModalOpened = $event">
-      <button type="button" class="btn btn-danger" @click="removeDevice">Remove Device</button>
+      <button type="button" class="btn btn-danger mr-2" @click="removeDevice">Remove Device</button>
     </ModalLayout>
   </div>
 </template>
@@ -85,18 +85,40 @@ export default {
       this.currentDevice = device
       this.showDeviceModalOpened = true
     },
-    addHostDevice(){
-      const hostDeviceName = prompt("What is your new device name ?").trim()
-      //TODO: Save device in the DB
-      //TODO: Start listening in a new tab
-      if(hostDeviceName !== ''){
-        this.devices.push({id: this.devices.at(-1).id + 1, name: hostDeviceName})
+    async addHostDevice(){
+      const hostDeviceName = prompt("What is your new device name ?")
+      if(!hostDeviceName || !hostDeviceName.trim()) return;
+
+      console.log('test')
+      try{
+        const addedDevice = await this.saveDevice(hostDeviceName.trim())
+
+        //TODO: Start listening in a new tab
+
+        this.devices.push(addedDevice)
         this.choiceModalOpened = false
+      } catch(e){
+        console.log(e)
       }
     },
     addOtherDevice(){
       alert("Go to this link on the other device. [link]")
       this.choiceModalOpened = false
+    },
+    async saveDevice(deviceName){
+      try{
+        return await Vue.reqFetch(
+          'POST',
+          'http://localhost:8080/devices',
+          {'Content-Type':'application/json', Authorization: this.authToken},
+          {
+            deviceName: deviceName,
+            userId: localStorage.getItem('userId')
+          }
+        )
+      } catch (e) {
+        throw new Error(e)
+      }
     },
     async removeDevice(){
       console.log('TODO: remove device ' + this.currentDevice.deviceId)
