@@ -15,6 +15,7 @@
 <script>
 import { MediaRecorder, register } from 'extendable-media-recorder';
 import { connect } from 'extendable-media-recorder-wav-encoder';
+import Vue from 'vue';
 
     export default{
         data(){
@@ -61,10 +62,24 @@ import { connect } from 'extendable-media-recorder-wav-encoder';
                 }
 
             },
-
             stopRecording(){
                 this.onAir = this.loopEnabled = false
                 this.mediaRecorder.stop()
+            },
+            async sendAudiofile(wavBlob){
+                const formData = new FormData()
+                formData.append('file', wavBlob)
+
+                try{
+                    await Vue.reqFetch(
+                        'POST',
+                        'http://localhost:8080/files/upload',
+                        {'Content-Type': 'application/json'},
+                        formData
+                    );
+                }catch(e){
+                    console.log(e)
+                }
             }
         },
         unMounted(){
