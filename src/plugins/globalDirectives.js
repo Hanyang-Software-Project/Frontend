@@ -16,8 +16,12 @@ const GlobalDirectives = {
       try{
         const res = await fetch(url, req);
 
-        if(res.ok)
-          return await res.json()
+        if(res.ok){
+          if(res.status === 204)
+            return await res.text()
+          else
+            return await res.json()
+        }
         else
           throw new Error(`Error : ${res.status} - ${await res.text()}`)
       } catch(err) {

@@ -11,9 +11,9 @@
       />
       <BasicCard
         v-for="device in devices"
-        :ref="device.id"
+        :ref="device.deviceId"
 
-        :textContent="device.name"
+        :textContent="device.deviceName"
         iconClass="ti-microphone"
         :onClick="() => openShowDeviceModal(device)"
         borderStyle="solid"
@@ -38,8 +38,8 @@
         />
       </div>
     </ModalLayout>
-    <ModalLayout :visible="showDeviceModalOpened" :modalTitle="currentDevice.name" @update:visible="showDeviceModalOpened = $event">
-      <button type="button" class="btn btn-danger" @click="removeDevice">Remove Device</button>
+    <ModalLayout :visible="showDeviceModalOpened" :modalTitle="currentDevice.deviceName" @update:visible="showDeviceModalOpened = $event">
+      <button type="button" class="btn btn-danger mr-2" @click="removeDevice">Remove Device</button>
     </ModalLayout>
   </div>
 </template>
@@ -47,6 +47,7 @@
 <script>
 import ModalLayout from '../layout/ModalLayout.vue';
 import BasicCard from '../components/Cards/BasicCard.vue';
+import Vue from 'vue';
 
 export default {
   components: {
@@ -55,20 +56,26 @@ export default {
   },
   data() {
     return {
-      devices: [
-        {id:1, name: 'device 1'}, 
-        {id:2, name: 'device 2'},
-        {id:3, name: 'device 3'},
-        {id:4, name: 'device 4'},
-        {id:5, name: 'device 5'},
-        {id:6, name: 'device 6'},
-        {id:7, name: 'device 7'},
-        {id:8, name: 'device 8'}
-      ],
+      devices: [],
       choiceModalOpened: false,
       showDeviceModalOpened: false,
-      currentDevice: ''
+      currentDevice: {}
     };
+  },
+  async mounted(){
+    try{
+      this.authToken = 'Bearer ' + localStorage.getItem('authToken')
+      this.devices = await Vue.reqFetch(
+        'GET',
+        'http://localhost:8080/devices/user/' + localStorage.getItem('userId'),
+        {
+          'Content-Type': 'application/json',
+          'Authorization': this.authToken
+        }
+      );
+    } catch(e) {
+      console.log(e)
+    }
   },
   methods: {
     openAddDeviceModal() {
@@ -78,23 +85,54 @@ export default {
       this.currentDevice = device
       this.showDeviceModalOpened = true
     },
-    addHostDevice(){
-      const hostDeviceName = prompt("What is your new device name ?").trim()
-      //TODO: Save device in the DB
-      //TODO: Start listening in a new tab
-      if(hostDeviceName !== ''){
-        this.devices.push({id: this.devices.at(-1).id + 1, name: hostDeviceName})
+    async addHostDevice(){
+      const hostDeviceName = prompt("What is your new device name ?")
+      if(!hostDeviceName || !hostDeviceName.trim()) return;
+
+      console.log('test')
+      try{
+        const addedDevice = await this.saveDevice(hostDeviceName.trim())
+
+        //TODO: Start listening in a new tab
+
+        this.devices.push(addedDevice)
         this.choiceModalOpened = false
+      } catch(e){
+        console.log(e)
       }
     },
     addOtherDevice(){
       alert("Go to this link on the other device. [link]")
       this.choiceModalOpened = false
     },
-    removeDevice(){
-      console.log('TODO: remove device ' + this.currentDevice.id)
-      this.devices = this.devices.filter(device => device.id !== this.currentDevice.id)
-      this.showDeviceModalOpened = false
+    async saveDevice(deviceName){
+      try{
+        return await Vue.reqFetch(
+          'POST',
+          'http://localhost:8080/devices',
+          {'Content-Type':'application/json', Authorization: this.authToken},
+          {
+            deviceName: deviceName,
+            userId: localStorage.getItem('userId')
+          }
+        )
+      } catch (e) {
+        throw new Error(e)
+      }
+    },
+    async removeDevice(){
+      console.log('TODO: remove device ' + this.currentDevice.deviceId)
+      try{
+        await Vue.reqFetch(
+          'DELETE',
+          'http://localhost:8080/devices/' + this.currentDevice.deviceId,
+          {Authorization: this.authToken}
+        );
+        this.devices = this.devices.filter(device => device.deviceId !== this.currentDevice.deviceId)
+        this.showDeviceModalOpened = false
+      } catch(e) {
+        console.log('Removal err: ' + e);
+      }
     }
   },
 };
