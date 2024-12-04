@@ -21,6 +21,47 @@ import ziggDashboard from "./plugins/ziggDashboard";
 import "vue-notifyjs/themes/default.css";
 import "./assets/css/loginSignin.css";
 
+
+router.beforeEach(async (to, from, next) => {
+  if(!to.meta.requiresAuth){
+    next()
+    return
+  }
+  const token = localStorage.getItem('authToken');
+  if(!token){
+    next({name: 'loginPage'});
+    return
+  }
+
+  try{
+    const jsonRes = await Vue.reqFetch(
+      'GET',
+      'http://localhost:8080/secure-endpoint',
+      {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    );
+
+    if(jsonRes.message !== 'OK'){
+      localStorage.setItem('authToken', '');
+      localStorage.setItem('userId', '');
+      localStorage.setItem('userRole', '');
+      next({name: 'loginPage'});
+    }
+    else{
+      localStorage.setItem('userId', jsonRes.uid);
+      localStorage.setItem('userRole', jsonRes.role);
+      next()
+    }
+  } catch (e){
+    console.log(e)
+    localStorage.setItem('authToken', '');
+    localStorage.setItem('userId', '');
+    localStorage.setItem('userRole', '');
+  }
+});
+
 Vue.use(ziggDashboard);
 
 /* eslint-disable no-new */

@@ -6,8 +6,7 @@
         <input
         :type="inputType"
         :placeholder="inputPlaceHolder"
-        @input="setModelValue($event.target.value)"
-        v-model="modelValue"
+        @input="handleInput($event)"
         :name="'input-' + label"
         class="form-control"
         />
@@ -23,8 +22,8 @@ export default {
         modelValue: [String, Number]
     },
     methods: {
-        setModelValue(newValue) {
-            this.$emit('update:modelValue', newValue);
+        handleInput(event) {
+            this.$emit('update:modelValue', event.target.value);
         }
     }
 }

@@ -1,87 +1,153 @@
 <template>
-  <div class="row">
-    <div class="col-xl-4 col-lg-5 col-md-6">
-      <div class="add-device-box" @click="openModal">
-        <i class="big-plus-icon">+</i>
-        <p>Add New Device</p>
-      </div>
+  <div>
+    <div class="device-cards-container">
+      <BasicCard
+        textContent="Add New Device"
+        iconClass="big-plus-icon"
+        :onClick="openAddDeviceModal"
+        borderStyle="dashed"
+        iconContent="+"
+        class="add-device-card"
+      />
+      <BasicCard
+        v-for="device in devices"
+        :ref="device.id"
+
+        :textContent="device.name"
+        iconClass="ti-microphone"
+        :onClick="() => openShowDeviceModal(device)"
+        borderStyle="solid"
+        class="device-card"
+      />
     </div>
-    <div class="col-xl-8 col-lg-7 col-md-6">
-      <div class="device-list">
-        <div 
-          class="device-box" 
-          v-for="device in devices" 
-          :key="device.id"
-        >
-          <p>{{ device.name }}</p>
-        </div>
+    <ModalLayout :visible="choiceModalOpened" modalTitle="What type of device ?" @update:visible="choiceModalOpened = $event">
+      <div id="add-device-modal-content">
+        <BasicCard
+          textContent="Add this device"
+          iconClass="ti-desktop"
+          :onClick="addHostDevice"
+          borderColor="black"
+          class="choiceCard m-2"
+        />
+        <BasicCard
+          textContent="Add another device"
+          iconClass="ti-mobile"
+          :onClick="addHostDevice"
+          borderColor="black"
+          class="choiceCard m-2"
+        />
       </div>
-    </div>
-    <add-device-modal ref="addDeviceModal"/>
+    </ModalLayout>
+    <ModalLayout :visible="showDeviceModalOpened" :modalTitle="currentDevice.name" @update:visible="showDeviceModalOpened = $event">
+      <button type="button" class="btn btn-danger" @click="removeDevice">Remove Device</button>
+    </ModalLayout>
   </div>
 </template>
 
 <script>
-import AddDeviceModal from './Devices/device-modal.vue'
+import ModalLayout from '../layout/ModalLayout.vue';
+import BasicCard from '../components/Cards/BasicCard.vue';
 
 export default {
   components: {
-    AddDeviceModal
+    BasicCard,
+    ModalLayout
   },
   data() {
     return {
-      devices: [],
+      devices: [
+        {id:1, name: 'device 1'}, 
+        {id:2, name: 'device 2'},
+        {id:3, name: 'device 3'},
+        {id:4, name: 'device 4'},
+        {id:5, name: 'device 5'},
+        {id:6, name: 'device 6'},
+        {id:7, name: 'device 7'},
+        {id:8, name: 'device 8'}
+      ],
+      choiceModalOpened: false,
+      showDeviceModalOpened: false,
+      currentDevice: ''
     };
   },
   methods: {
-    openModal() {
-      this.$refs.addDeviceModal.openModal();
+    openAddDeviceModal() {
+      this.choiceModalOpened = true
     },
-    closeModal() {
-      this.$refs.addDeviceModal.closeModal();
+    openShowDeviceModal(device){
+      this.currentDevice = device
+      this.showDeviceModalOpened = true
     },
-    addDevice(name) {
-      if (name.trim()) {
-        this.devices.push({
-          id: Date.now(),
-          name: name,
-        });
-        this.closeModal();
+    addHostDevice(){
+      const hostDeviceName = prompt("What is your new device name ?").trim()
+      //TODO: Save device in the DB
+      //TODO: Start listening in a new tab
+      if(hostDeviceName !== ''){
+        this.devices.push({id: this.devices.at(-1).id + 1, name: hostDeviceName})
+        this.choiceModalOpened = false
       }
     },
+    addOtherDevice(){
+      alert("Go to this link on the other device. [link]")
+      this.choiceModalOpened = false
+    },
+    removeDevice(){
+      console.log('TODO: remove device ' + this.currentDevice.id)
+      this.devices = this.devices.filter(device => device.id !== this.currentDevice.id)
+      this.showDeviceModalOpened = false
+    }
   },
 };
 </script>
 
 <style>
-.add-device-box {
+.device-cards-container{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 150px;
-  border: 2px dashed #ccc;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-.add-device-box:hover {
-  background-color: #f5f5f5;
-}
-.big-plus-icon {
-  font-size: 48px;
-  color: #555;
-}
-.device-list {
-  display: flex;
+  justify-content: space-evenly;
   flex-wrap: wrap;
-  gap: 10px;
 }
-.device-box {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px 20px;
-  text-align: center;
+
+.device-cards-container *{
+  flex: 0 0 22%;
+  margin-bottom: 20px;
+}
+
+.device-cards-container .add-device-card{
+  flex-basis: 30%;
+}
+
+#add-device-modal-content{
+  display: flex;
+  justify-content: space-between;
+}
+
+#add-device-modal-content .choiceCard{
+  min-width: 175px;
+}
+
+@media only screen and (max-width: 600px) {
+  .device-cards-container > *{
+    flex-basis: 30%;
+  }
+
+  #add-device-modal-content{
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .device-cards-container *{
+    flex-basis: 47%;
+  }
+
+  .device-cards-container > * > *{
+    margin: 0;
+    position: relative;
+    top: 15px
+  }
+
+  #add-device-modal-content p {
+    font-size: 1em;
+  }
 }
 </style>
