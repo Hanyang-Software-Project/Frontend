@@ -1,12 +1,13 @@
 <template>
   <div v-if="isVisible" class="modal-overlay2" @click.self="closeModal">
     <div class="modal-content" @click.stop>
+      
       <card title="Confirm Alarm Status">
         <p>Is this a false or real alarm?</p>
         <button @click="handleAlarm('false')" class="false-alarm-btn">False Alarm</button>
         <button @click="handleAlarm('real')" class="real-alarm-btn">Real Alarm</button>
         <button @click="closeModal" class="close-btn">Close</button>
-      </card>
+    </card>
     </div>
   </div>
 </template>
@@ -15,12 +16,6 @@
 import axios from 'axios'; 
 
 export default {
-  data() {
-    return {
-      timer: null,
-      notificationInterval: 10000 // Interval in milliseconds to check for notifications
-    };
-  },
   props: {
     isVisible: {
       type: Boolean,
@@ -29,23 +24,9 @@ export default {
     currentItem: Object
   },
   methods: {
-    fetchNotifications() {
-      axios.get('http://localhost:8080/notifications')
-        .then(response => {
-          const notifications = response.data;
-          const pendingAlarm = notifications.find(n => n.threatFlag === null);
-          if (pendingAlarm) {
-            this.currentItem = pendingAlarm;
-            this.$emit('update:isVisible', true);
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching notifications:', error);
-        });
-    },
     handleAlarm(type) {
       const threatFlag = type === 'real'; // Converts 'real' to true, any other value to false
-      axios.put(`http://localhost:8080/alerts/${this.currentItem.alertId}`, {
+      axios.put(`http://54.206.75.219:8080/alerts/${this.currentItem.alertId}`, {
         threatFlag: threatFlag
       })
       .then(() => {
@@ -61,27 +42,10 @@ export default {
     },
     closeModal() {
       this.$emit('update:isVisible', false);
-    },
-    startNotificationCheck() {
-      this.timer = setInterval(this.fetchNotifications, this.notificationInterval);
-    },
-    stopNotificationCheck() {
-      clearInterval(this.timer);
     }
-  },
-  created() {
-    this.startNotificationCheck();
-  },
-  beforeDestroy() {
-    this.stopNotificationCheck();
   }
 };
 </script>
-
-<style scoped>
-/* Styles remain the same as previously defined */
-</style>
-
 
 
 <style scoped>
