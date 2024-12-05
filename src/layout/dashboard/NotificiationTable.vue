@@ -17,18 +17,24 @@
               <td>{{ alert.userId }}</td>
               <td>{{ alert.threatFlag === null ? 'Not Set' : (alert.threatFlag ? 'Real Alarm' : 'False Alarm') }}</td>
               <td>
-                <button class="btn btn-warning" @click="handleFalseAlarm(alert)">Handle False Alarm</button>
+                <button class="btn btn-warning" @click="handleFalseAlarm(alert)">Handle Alarm</button>
               </td>
             </tr>
           </tbody>
         </table>
       </table-card>
     </div>
+    <!-- Alarm Modal for immediate warnings -->
+    <alarm-modal
+      :isVisible="showWarningModal"
+      @update:isVisible="showWarningModal = $event"
+    />
+    <!-- Handling Modal for user decisions -->
     <alarm-handling-modal
-      :isVisible="showModal"
+      :isVisible="showHandlingModal"
       :currentItem="currentItem"
       @alarmHandled="processAlarm"
-      @update:isVisible="showModal = $event"
+      @update:isVisible="showHandlingModal = $event"
     />
   </div>
 </template>
@@ -36,19 +42,22 @@
 <script>
 import axios from 'axios';
 import { TableCard } from "@/components/index";
+import AlarmModal from './AlarmModal.vue';
 import AlarmHandlingModal from './AlarmHandlingModal.vue';
 import { format } from 'date-fns';
 
 export default {
   components: {
     TableCard,
+    AlarmModal,
     AlarmHandlingModal
   },
   data() {
     return {
       notifications: [],
       userId: localStorage.getItem('userId'),
-      showModal: false,
+      showWarningModal: false,
+      showHandlingModal: false,
       currentItem: null,
       refreshInterval: null,
     };
@@ -78,17 +87,21 @@ export default {
             })));
           })
           .catch(error => {
-            //console.error(`Error fetching alerts for user ${userId}:`, error);
+            console.error(`Error fetching alerts for user ${userId}:`, error);
           });
       });
     },
     updateNotifications(fetchedAlerts) {
-      // Use a more complex comparison logic
       const newAlerts = fetchedAlerts.filter(fetchedAlert => 
         !this.notifications.some(existingAlert => existingAlert.alertId === fetchedAlert.alertId));
 
       if (newAlerts.length > 0) {
         this.notifications = [...this.notifications, ...newAlerts];
+        // Check for new alerts with null threatFlag
+        const alertWithNullFlag = newAlerts.find(alert => alert.threatFlag === null);
+        if (alertWithNullFlag) {
+          this.showWarningModal = true;
+        }
       }
     },
     formatDate(timestamp) {
@@ -96,18 +109,17 @@ export default {
     },
     handleFalseAlarm(alert) {
       this.currentItem = alert;
-      this.showModal = true;
+      this.showHandlingModal = true;
     },
     processAlarm(data) {
       console.log(`Alarm processed for:`, data);
-      // Optionally refresh data or update local state here
-      this.showModal = false;
+      this.showHandlingModal = false;
       this.fetchHouseholdUsers(); // Refresh data if necessary
     }
   },
   mounted() {
     this.fetchHouseholdUsers();
-    this.refreshInterval = setInterval(this.fetchHouseholdUsers, 5000);
+    this.refreshInterval = setInterval(this.fetchHouseholdUsers, 5000); // Check every 5 seconds
   },
   beforeDestroy() {
     clearInterval(this.refreshInterval);
