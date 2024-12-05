@@ -15,7 +15,7 @@ const routes = [
   { path: "/", redirect: {name: 'loginPage'}, name: 'root'},
   { path: "/login", component: Login, name: 'loginPage'},
   { path: "/signin", component: Signin, name: 'signinPage'},
-  { path: "/recording", component: TestRecording, name: 'recording'},
+  { path: "/recording", component: TestRecording, name: 'recording', meta: {requiresDeviceCookie: true}},
   {
     path: "/app",
     component: DashboardLayout,
