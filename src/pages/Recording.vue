@@ -14,7 +14,7 @@
 </template>
 <script>
 import { MediaRecorder, register } from 'extendable-media-recorder';
-import { connect } from 'extendable-media-recorder-wav-encoder';
+import { connect, disconnect } from 'extendable-media-recorder-wav-encoder';
 import Vue from 'vue';
 
     export default{
@@ -31,7 +31,11 @@ import Vue from 'vue';
             this.mediaRecorder = null
             this.audioChunks = []
             this.loopEnabled = true
+            this.recordingDeviceId = Vue.getCookie('recordDeviceId')
             await register(await connect())
+        },
+        async unMounted(){
+            await register(await disconnect())
         },
         methods: {
             async startRecording(){
@@ -70,6 +74,7 @@ import Vue from 'vue';
                 this.mediaRecorder.stop()
             },
             async sendAudiofile(wavBlob){
+                console.log(this.recordingDeviceId)
                 const formData = new FormData()
                 formData.append('file', wavBlob)
                 console.log(formData)
@@ -88,7 +93,7 @@ import Vue from 'vue';
                         {'Content-Type': 'application/json'},
                         {
                             filePath: fileSaveRes.filePath,
-                            deviceId: '',//TODO,
+                            deviceId: this.recordingDeviceId,//TODO,
                             userId: localStorage.getItem('userId')
                         }
                     )
