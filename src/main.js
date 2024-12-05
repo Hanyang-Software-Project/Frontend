@@ -23,6 +23,11 @@ import "./assets/css/loginSignin.css";
 
 
 router.beforeEach(async (to, from, next) => {
+  if(to.meta.requiresDeviceCookie && !Vue.getCookie('recordDeviceId')){
+    next({name: 'devices'})
+    close()
+    return;
+  }
   if(!to.meta.requiresAuth){
     next()
     return

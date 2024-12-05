@@ -9,13 +9,13 @@ import Notifications from "@/pages/Notifications.vue";
 import Devices from "../pages/Devices.vue";
 import Login from "@/pages/Login.vue";
 import Signin from "@/pages/Signin.vue";
-import TestRecording from "../pages/TestRecording.vue";
+import TestRecording from "../pages/Recording.vue";
 
 const routes = [
   { path: "/", redirect: {name: 'loginPage'}, name: 'root'},
   { path: "/login", component: Login, name: 'loginPage'},
   { path: "/signin", component: Signin, name: 'signinPage'},
-  { path: "/testRecord", component: TestRecording, name: 'testRecord'},
+  { path: "/recording", component: TestRecording, name: 'recording', meta: {requiresDeviceCookie: true}},
   {
     path: "/app",
     component: DashboardLayout,

@@ -92,8 +92,12 @@ export default {
 
       try{
         const addedDevice = await this.saveDevice(hostDeviceName.trim())
-
+        console.log(addedDevice.deviceId)
         //TODO: Start listening in a new tab
+        Vue.createCookie('recordDeviceId', addedDevice.deviceId, 365)
+
+        const routeData = this.$router.resolve({name: 'recording'});
+        window.open(routeData.href, '_blank');
 
         this.devices.push(addedDevice)
         this.choiceModalOpened = false
@@ -128,6 +132,9 @@ export default {
           'http://localhost:8080/devices/' + this.currentDevice.deviceId,
           {Authorization: this.authToken}
         );
+        const hostDeviceId = Vue.getCookie('recordDeviceId');
+        if(this.currentDevice.deviceId == hostDeviceId) Vue.removeCookie('recordDeviceId')
+
         this.devices = this.devices.filter(device => device.deviceId !== this.currentDevice.deviceId)
         this.showDeviceModalOpened = false
       } catch(e) {
