@@ -15,7 +15,7 @@
             <tr v-for="alert in notifications" :key="alert.alertId">
               <td>{{ formatDate(alert.timestamp) }}</td>
               <td>{{ alert.userId }}</td>
-              <td>{{ alert.threatFlag || 'No Threat' }}</td>
+              <td>{{ alert.threatFlag === null ? 'Not Set' : (alert.threatFlag ? 'Real Alarm' : 'False Alarm') }}</td>
               <td>
                 <button class="btn btn-warning" @click="handleFalseAlarm(alert)">Handle False Alarm</button>
               </td>
@@ -78,7 +78,7 @@ export default {
             })));
           })
           .catch(error => {
-            console.error(`Error fetching alerts for user ${userId}:`, error);
+            //console.error(`Error fetching alerts for user ${userId}:`, error);
           });
       });
     },
@@ -100,7 +100,9 @@ export default {
     },
     processAlarm(data) {
       console.log(`Alarm processed for:`, data);
+      // Optionally refresh data or update local state here
       this.showModal = false;
+      this.fetchHouseholdUsers(); // Refresh data if necessary
     }
   },
   mounted() {

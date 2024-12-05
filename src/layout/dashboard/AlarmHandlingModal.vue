@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import axios from 'axios';  // Ensure axios is imported
+
 export default {
   props: {
     isVisible: {
@@ -23,8 +25,20 @@ export default {
   },
   methods: {
     handleAlarm(type) {
-      this.$emit('alarmHandled', { type, item: this.currentItem });
-      this.closeModal();
+      const threatFlag = type === 'real'; // Converts 'real' to true, any other value to false
+      axios.put(`http://localhost:8080/alerts/${this.currentItem.alertId}`, {
+        threatFlag: threatFlag
+      })
+      .then(() => {
+        this.$emit('alarmHandled', { type, item: this.currentItem });
+        console.log('Alarm status updated successfully');
+      })
+      .catch(error => {
+        console.error('Error updating alarm status:', error);
+      })
+      .finally(() => {
+        this.closeModal();
+      });
     },
     closeModal() {
       this.$emit('update:isVisible', false);
@@ -32,6 +46,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .modal-overlay2 {
