@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     fetchHousehold() {
-      axios.get(`http://localhost:8080/house/user/${this.householdId}`)
+      axios.get(`http://54.206.75.219:8080/house/user/${this.householdId}`)
         .then(response => {
           console.log("API Response:", response.data); 
           if (Array.isArray(response.data) && response.data.length > 0) {
@@ -69,7 +69,7 @@ export default {
 
     fetchUserDetails(userIds) {
       userIds.forEach(userId => {
-        axios.get(`http://localhost:8080/users/userDTO/${userId}`)
+        axios.get(`http://54.206.75.219:8080/users/userDTO/${userId}`)
           .then(response => {
             console.log(`Data received for user ID ${userId}:`, response.data);
             this.users.push({
