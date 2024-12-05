@@ -27,44 +27,13 @@
     </div>
 
     <!-- Warning List -->
+    <!-- Notification Table Component -->
     <div class="row">
       <div class="col-12">
-        <table-card
-          title="Notifications"
-          sub-title="24 Hours notifications">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Notification Type</th>
-              <th>Room Location</th>
-              <th>Device</th>
-              <th>Time</th>
-              <th>Alert</th> <!-- New column for alert button -->
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in notifications" :key="item.id" :class="`text-${item.status}`">
-              <td>{{ item.type }}</td>
-              <td>{{ item.room }}</td>
-              <td>{{ item.device }}</td>
-              <td>{{ item.time }}</td>
-              <td>
-                <button @click="openModal(item)" class="btn btn-warning">
-                  <i class="ti-alert"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <alarm-handling-modal
-          :isVisible="showModal"
-          :currentItem="currentItem"
-          @alarmHandled="processAlarm"
-          @update:isVisible="showModal = $event"
-        />
-
-        </table-card>
+        <notification-table></notification-table>
       </div>
+    </div>
+
 
       
     </div>
@@ -74,12 +43,15 @@
 import { StatsCard, TableCard } from "@/components/index";
 import AlarmHandlingModal from '../layout/dashboard/AlarmHandlingModal.vue';
 import axios from 'axios';
+import NotificationTable from '../layout/dashboard/NotificiationTable.vue'; // Adjust the path as necessary
+
 
 export default {
   components: {
     StatsCard,
     TableCard,
     AlarmHandlingModal,
+    NotificationTable,
   },
   data() {
     return {
@@ -141,32 +113,6 @@ export default {
           value: "3",
           footerText: "In the last hour",
           footerIcon: "ti-timer",
-        },
-      ],
-      notifications: [
-        {
-          id: 1,
-          type: "Warning",
-          room: "Living Room",
-          device: "Air Conditioner",
-          time: "14:35",
-          status: "warning", // Represents yellow color
-        },
-        {
-          id: 2,
-          type: "Critical",
-          room: "Kitchen",
-          device: "Refrigerator",
-          time: "09:20",
-          status: "danger", // Represents red color
-        },
-        {
-          id: 3,
-          type: "Info",
-          room: "Bedroom",
-          device: "Lamp",
-          time: "23:15",
-          status: "success", // Represents green color
         },
       ],
       

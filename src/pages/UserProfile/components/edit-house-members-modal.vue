@@ -4,9 +4,9 @@
       <card title="Edit Household Members">
         <div>
           <ul class="list-unstyled">
-            <li v-for="user in users" :key="user.username" class="row mb-2">
+            <li v-for="user in users" :key="user.id" class="row mb-2">
               <div class="col-3">
-                <span>{{ user.name }}</span>
+                <i class="ti-user large-icon"></i>
               </div>
               <div class="col-3">
                 <span>{{ user.username }}</span>
@@ -15,7 +15,7 @@
                 <span>{{ user.email }}</span>
               </div>
               <div class="col-2">
-                <button class="btn btn-danger btn-sm" @click="removeUser(user.username)">Remove</button>
+                <button class="btn btn-danger btn-sm" @click="removeUser(user.id)">Remove</button>
               </div>
             </li>
           </ul>
@@ -44,45 +44,77 @@
 </template>
 
 <script>
-import axios from 'axios'; // Make sure axios is imported if you're using it for API calls
+import axios from 'axios'; 
 
 export default {
   data() {
     return {
-      users: [], // This will store user data fetched from the API or mock data
+      users: [],
       newUsername: '',
-      email: '',
       isVisible: false,
     };
   },
   methods: {
     openModal() {
       this.isVisible = true;
-      this.fetchUsers(); // Fetch users when the modal is opened
+      this.fetchHousehold();
     },
-    fetchUsers() {
-      // Replace with actual API call to fetch users
-      // axios.get('/api/users').then(response => {
-      //   this.users = response.data;
-      // });
-      // Mock data for testing without API
-      this.users = [
-        { username: "mother", name: "Jane Doe", email: "jane@example.com" },
-        { username: "father", name: "John Doe", email: "john@example.com" },
-      ];
+    fetchHousehold() {
+      const householdId = localStorage.getItem('userId');
+      axios.get(`http://localhost:8080/house/user/${householdId}`)
+        .then(response => {
+          if (Array.isArray(response.data) && response.data.length > 0) {
+            const household = response.data[0];
+            if (household && Array.isArray(household.users)) {
+              const userIds = household.users.map(user => user.userId);
+              this.fetchUserDetails(userIds);
+            } else {
+              console.error('No users found in the household:', household);
+            }
+          } else {
+            console.error('Unexpected response structure or empty response:', response.data);
+          }
+        })
+        .catch(error => {
+          console.error('There was an error fetching the household:', error);
+        });
+    },
+    fetchUserDetails(userIds) {
+      userIds.forEach(userId => {
+        axios.get(`http://localhost:8080/users/userDTO/${userId}`)
+          .then(response => {
+            this.users.push({
+              id: response.data.id,
+              username: response.data.username,
+              email: response.data.email,
+            });
+          })
+          .catch(error => {
+            console.error(`Error fetching user details for user ID ${userId}:`, error);
+          });
+      });
     },
     addUser() {
-      // Here you would ideally check if the user exists and then add them to the household
-      // This is a placeholder for demonstration
       let newUser = { username: this.newUsername, name: "New User", email: "new@example.com" };
-      this.users.push(newUser);
-      this.newUsername = ''; // Reset the input field after adding
+      axios.post(`http://localhost:8080/users`, newUser)
+        .then(response => {
+          this.users.push(response.data);
+          this.newUsername = ''; 
+        })
+        .catch(error => {
+          console.error('Error adding new user:', error);
+        });
     },
-    removeUser(username) {
-      this.users = this.users.filter(user => user.username !== username);
+    removeUser(userId) {
+      axios.delete(`http://localhost:8080/users/${userId}`)
+        .then(() => {
+          this.users = this.users.filter(user => user.id !== userId);
+        })
+        .catch(error => {
+          console.error('Error removing user:', error);
+        });
     },
     sendUpdate() {
-      // Placeholder for sending update to server
       alert('Changes saved successfully!');
       this.closeModal();
     },
@@ -92,6 +124,8 @@ export default {
   }
 };
 </script>
+
+
 <style scoped>
 .modal-overlay2 {
   position: fixed;
