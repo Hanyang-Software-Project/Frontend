@@ -3,12 +3,6 @@
         <h1 class="mb-5">Audio recording</h1>
         <button type="button" class="btn btn-success mb-2" :disabled="onAir" @click="startRecording">Start</button>
         <button type="button" class="btn btn-danger mt-2" :disabled="!onAir" @click="stopRecording">Stop</button>
-        <!--ul v-if="audioUrl != []">
-            <li v-for="src in audioUrl" :ref="src">
-                <audio controls :src="src"></audio>
-            </li>
-        </ul-->
-        <!-- audio v-if="audioSrc !== ''" controls :src="audioSrc"></audio -->
         <p v-if="onAir" id="onAirLight">• on air</p>
     </div>
 </template>
@@ -20,10 +14,7 @@ import Vue from 'vue';
     export default{
         data(){
             return {
-                audioSrc: '',
-                audioSrcArr: [],
                 onAir: false,
-                audioUrl: []
             }
         },
         async mounted(){
@@ -54,10 +45,6 @@ import Vue from 'vue';
 
                         await this.sendAudiofile(audioBlob)
 
-                        /*const audioLink = URL.createObjectURL(audioBlob)
-                        this.audioSrc = audioLink
-                        this.audioUrl.push(audioLink)*/
-
                         this.audioChunks = []
                         if(this.loopEnabled) this.mediaRecorder.start(5000)
                     }
@@ -69,10 +56,12 @@ import Vue from 'vue';
                 }
 
             },
+
             stopRecording(){
                 this.onAir = this.loopEnabled = false
                 this.mediaRecorder.stop()
             },
+
             async sendAudiofile(wavBlob){
                 console.log(this.recordingDeviceId)
                 const formData = new FormData()
@@ -93,7 +82,7 @@ import Vue from 'vue';
                         {'Content-Type': 'application/json'},
                         {
                             filePath: fileSaveRes.filePath,
-                            deviceId: this.recordingDeviceId,//TODO,
+                            deviceId: this.recordingDeviceId,
                             userId: localStorage.getItem('userId')
                         }
                     )

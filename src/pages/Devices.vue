@@ -86,6 +86,7 @@ export default {
       this.currentDevice = device
       this.showDeviceModalOpened = true
     },
+
     async addHostDevice(){
       const hostDeviceName = prompt("What is your new device name ?")
       if(!hostDeviceName || !hostDeviceName.trim()) return;
@@ -93,7 +94,7 @@ export default {
       try{
         const addedDevice = await this.saveDevice(hostDeviceName.trim())
         console.log(addedDevice.deviceId)
-        //TODO: Start listening in a new tab
+
         Vue.createCookie('recordDeviceId', addedDevice.deviceId, 365)
 
         const routeData = this.$router.resolve({name: 'recording'});
@@ -105,10 +106,12 @@ export default {
         console.log(e)
       }
     },
+
     addOtherDevice(){
       alert("Go to this link on the other device. [link]")
       this.choiceModalOpened = false
     },
+
     async saveDevice(deviceName){
       try{
         return await Vue.reqFetch(
@@ -124,6 +127,7 @@ export default {
         throw new Error(e)
       }
     },
+
     async removeDevice(){
       console.log('TODO: remove device ' + this.currentDevice.deviceId)
       try{
@@ -141,6 +145,7 @@ export default {
         console.log('Removal err: ' + e);
       }
     },
+
     async updateDevice(){
       const newName = prompt("What is your device new name ?")
       if(!newName || !newName.trim()) return;
