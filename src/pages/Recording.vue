@@ -63,7 +63,8 @@ export default {
             }
         },
         stopRecording() {
-            this.onAir = this.loopEnabled = false;
+            this.onAir = false;
+            this.loopEnabled = false;
             if (this.mediaRecorder) {
                 this.mediaRecorder.stop();
             }
@@ -85,7 +86,7 @@ export default {
                     'http://52.62.128.15:8080/soundData',
                     { 'Content-Type': 'application/json' },
                     {
-                        filePath: fileSaveRes.filePath,
+                        filePath: fileSaveRes.fileName,
                         deviceId: this.recordingDeviceId,
                         userId: localStorage.getItem('userId'),
                     }

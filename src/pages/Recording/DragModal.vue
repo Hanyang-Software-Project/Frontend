@@ -10,6 +10,8 @@
     </div>
 </template>
 <script>
+import Vue from 'vue';
+
 export default {
     data() {
         return {
@@ -70,7 +72,7 @@ export default {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        filePath: fileSaveRes.filePath,
+                        filePath: fileSaveRes.fileName,
                         deviceId: Vue.getCookie("recordDeviceId"),
                         userId: localStorage.getItem("userId"),
                     }),
