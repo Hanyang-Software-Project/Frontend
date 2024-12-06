@@ -51,7 +51,7 @@ export default{
       try{
         await Vue.reqFetch(
           'POST',
-          'http://54.206.75.219:8080/users/create-user',
+          'http://52.62.128.15:8080/users/create-user',
           {'Content-Type': 'application/json'},
           body
         );

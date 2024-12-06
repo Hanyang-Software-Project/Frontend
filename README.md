@@ -41,7 +41,7 @@ npm run build
 npm install
 ```
 
-### serve with hot reload at 54.206.75.219:8080
+### serve with hot reload at 52.62.128.15:8080
 
 ```
 npm run dev

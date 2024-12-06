@@ -61,7 +61,7 @@ export default {
     },
     fetchHousehold() {
       const householdId = localStorage.getItem('userId');
-      axios.get(`http://54.206.75.219:8080/house/user/${householdId}`)
+      axios.get(`http://52.62.128.15:8080/house/user/${householdId}`)
         .then(response => {
           if (Array.isArray(response.data) && response.data.length > 0) {
             const household = response.data[0];
@@ -81,7 +81,7 @@ export default {
     },
     fetchUserDetails(userIds) {
       userIds.forEach(userId => {
-        axios.get(`http://54.206.75.219:8080/users/userDTO/${userId}`)
+        axios.get(`http://52.62.128.15:8080/users/userDTO/${userId}`)
           .then(response => {
             this.users.push({
               id: response.data.id,
@@ -96,7 +96,7 @@ export default {
     },
     addUser() {
       let newUser = { username: this.newUsername, name: "New User", email: "new@example.com" };
-      axios.post(`http://54.206.75.219:8080/users`, newUser)
+      axios.post(`http://52.62.128.15:8080/users`, newUser)
         .then(response => {
           this.users.push(response.data);
           this.newUsername = ''; 
@@ -106,7 +106,7 @@ export default {
         });
     },
     removeUser(userId) {
-      axios.delete(`http://54.206.75.219:8080/users/${userId}`)
+      axios.delete(`http://52.62.128.15:8080/users/${userId}`)
         .then(() => {
           this.users = this.users.filter(user => user.id !== userId);
         })

@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     fetchHouseholdMembers() {
-      axios.get(`http://54.206.75.219:8080/house/user/${this.householdId}`)
+      axios.get(`http://52.62.128.15:8080/house/user/${this.householdId}`)
         .then(response => {
           if (response.data.length > 0 && response.data[0].users) {
             this.updateHouseholdMembersCount(response.data[0].users.length);
