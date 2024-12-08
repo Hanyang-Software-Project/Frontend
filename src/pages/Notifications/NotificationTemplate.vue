@@ -1,6 +1,6 @@
 <template>
   <span
-    >Welcome to <b>zigg Dashboard</b> - a beautiful freebie for every web
+    >Welcome to <b>LG Housesecurity Dashboard</b> 
     developer.</span
   >
 </template>

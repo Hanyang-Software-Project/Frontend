@@ -1,46 +1,49 @@
 <template>
-  <div v-if="isVisible" class="modal-overlay2" @click.self="closeModal">
-    <div class="modal-content" @click.stop>
-      <card title="Edit Household Members">
-        <div>
-          <ul class="list-unstyled">
-            <li v-for="user in users" :key="user.id" class="row mb-2">
-              <div class="col-3">
-                <i class="ti-user large-icon"></i>
-              </div>
-              <div class="col-3">
-                <span>{{ user.username }}</span>
-              </div>
-              <div class="col-4">
-                <span>{{ user.email }}</span>
-              </div>
-              <div class="col-2">
-                <button class="btn btn-danger btn-sm" @click="removeUser(user.id)">Remove</button>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <form @submit.prevent="addUser" class="form row">
-          <div class="col-8">
-            <fg-input
-              type="text"
-              label="Add User by Username"
-              placeholder="Username"
-              v-model="newUsername"
-            >
-            </fg-input>
+  <!-- Teleport the modal overlay and content to the body -->
+  <teleport to="body">
+    <div v-if="isVisible" class="modal-overlay2" @click.self="closeModal">
+      <div class="modal-content" @click.stop>
+        <card title="Edit Household Members">
+          <div>
+            <ul class="list-unstyled">
+              <li v-for="user in users" :key="user.id" class="row mb-2">
+                <div class="col-3">
+                  <i class="ti-user large-icon"></i>
+                </div>
+                <div class="col-3">
+                  <span>{{ user.username }}</span>
+                </div>
+                <div class="col-4">
+                  <span>{{ user.email }}</span>
+                </div>
+                <div class="col-2">
+                  <button class="btn btn-danger btn-sm" @click="removeUser(user.id)">Remove</button>
+                </div>
+              </li>
+            </ul>
           </div>
-          <div class="col-4 text-center">
-            <button type="submit" class="btn btn-success">Add New</button>
+          <form @submit.prevent="addUser" class="form row">
+            <div class="col-8">
+              <fg-input
+                type="text"
+                label="Add User by Username"
+                placeholder="Username"
+                v-model="newUsername"
+              >
+              </fg-input>
+            </div>
+            <div class="col-4 text-center">
+              <button type="submit" class="btn btn-success">Add New</button>
+            </div>
+          </form>
+          <div class="button-group text-center mt-3">
+            <button class="update-btn btn btn-primary" @click="sendUpdate">Save Changes</button>
+            <button class="close-btn btn btn-secondary" @click="closeModal">Close</button>
           </div>
-        </form>
-        <div class="button-group text-center mt-3">
-          <button class="update-btn btn btn-primary" @click="sendUpdate">Save Changes</button>
-          <button class="close-btn btn btn-secondary" @click="closeModal">Close</button>
-        </div>
-      </card>
+        </card>
+      </div>
     </div>
-  </div>
+  </teleport>
 </template>
 
 <script>
@@ -61,7 +64,7 @@ export default {
     },
     fetchHousehold() {
       const householdId = localStorage.getItem('userId');
-      axios.get(`http://52.62.128.15:8080/house/user/${householdId}`)
+      axios.get(`http://3.24.110.71:8080/house/user/${householdId}`)
         .then(response => {
           if (Array.isArray(response.data) && response.data.length > 0) {
             const household = response.data[0];
@@ -81,7 +84,7 @@ export default {
     },
     fetchUserDetails(userIds) {
       userIds.forEach(userId => {
-        axios.get(`http://52.62.128.15:8080/users/userDTO/${userId}`)
+        axios.get(`http://3.24.110.71:8080/users/userDTO/${userId}`)
           .then(response => {
             this.users.push({
               id: response.data.id,
@@ -96,7 +99,7 @@ export default {
     },
     addUser() {
       let newUser = { username: this.newUsername, name: "New User", email: "new@example.com" };
-      axios.post(`http://52.62.128.15:8080/users`, newUser)
+      axios.post(`http://3.24.110.71:8080/users`, newUser)
         .then(response => {
           this.users.push(response.data);
           this.newUsername = ''; 
@@ -106,7 +109,7 @@ export default {
         });
     },
     removeUser(userId) {
-      axios.delete(`http://52.62.128.15:8080/users/${userId}`)
+      axios.delete(`http://3.24.110.71:8080/users/${userId}`)
         .then(() => {
           this.users = this.users.filter(user => user.id !== userId);
         })
@@ -125,7 +128,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .modal-overlay2 {
   position: fixed;
@@ -133,49 +135,19 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 99999;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.6); 
-  z-index: 9999;
 }
 
 .modal-content {
+  z-index: 100000;
   background: white;
   padding: 20px;
-  border-radius: 8px; /* Matched from .card class */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Matched from .card class */
-  width: auto; /* Allows content to define width */
-  max-width: 90%; /* Restricts maximum width */
-  cursor: default; /* Ensures default cursor over the modal */
-}
-
-/* Styles for buttons within modal */
-button {
-  margin: 0 10px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  color: white;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.false-alarm-btn, .real-alarm-btn, .update-btn, .close-btn {
-  background-color: #3498db; /* Apply consistent styling for buttons */
-}
-
-.close-btn {
-  background-color: #555;
-}
-
-.btn-danger {
-  background-color: #e74c3c; /* Red for critical actions like removal */
-}
-
-.btn-success {
-  background-color: #2ecc71; /* Green for affirmative actions like add */
+  border-radius: 8px;
+  max-width: 90%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 </style>
-

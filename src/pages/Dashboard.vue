@@ -1,19 +1,15 @@
 <template>
   <div>
-    <!--Stats cards-->
     <div class="row">
-      <div
-        class="col-md-6 col-xl-3"
-        v-for="stats in statsCards"
-        :key="stats.title"
-      >
+      <div class="col-md-6 col-xl-3" v-for="stats in statsCards" :key="stats.title">
         <stats-card>
-          <div
-            class="icon-big text-center"
-            :class="`icon-${stats.type}`"
-            slot="header"
-          >
-            <i :class="stats.icon"></i>
+          <div class="icon-big text-center" :class="`icon-${stats.type}`" slot="header">
+            <template v-if="stats.title === 'Household Devices'">
+              <img class="device-icon" :src="require('@/assets/img/LG_DEVICES.png')" alt="Devices Icon" />
+            </template>
+            <template v-else>
+              <i :class="stats.icon"></i>
+            </template>
           </div>
           <div class="numbers" slot="content">
             <p>{{ stats.title }}</p>
@@ -25,26 +21,19 @@
         </stats-card>
       </div>
     </div>
-
-    <!-- Warning List -->
-    <!-- Notification Table Component -->
     <div class="row">
       <div class="col-12">
         <notification-table></notification-table>
       </div>
     </div>
-
-
-      
-    </div>
   </div>
 </template>
+
 <script>
 import { StatsCard, TableCard } from "@/components/index";
 import AlarmHandlingModal from '../layout/dashboard/AlarmHandlingModal.vue';
 import axios from 'axios';
-import NotificationTable from '../layout/dashboard/NotificiationTable.vue'; // Adjust the path as necessary
-
+import NotificationTable from '../layout/dashboard/NotificiationTable.vue';
 
 export default {
   components: {
@@ -57,44 +46,13 @@ export default {
     return {
       showModal: false,
       currentItem: null,
-      householdId: 3, // Set as a default value, can be dynamic
-
-      tableCard: {
-        title: "Notifications",
-        subTitle: "24 Hours notifications",
-        data: [
-          {
-            id: 1,
-            type: "Warning",
-            room: "Living Room",
-            device: "Air Conditioner",
-            time: "14:35",
-            status: "warning", // Will correspond to a color class
-          },
-          {
-            id: 2,
-            type: "Critical",
-            room: "Kitchen",
-            device: "Refrigerator",
-            time: "09:20",
-            status: "danger", // Will correspond to a color class
-          },
-          {
-            id: 3,
-            type: "Info",
-            room: "Bedroom",
-            device: "Lamp",
-            time: "23:15",
-            status: "success", // Will correspond to a color class
-          },
-        ],
-      },
+      userId: localStorage.getItem('userId'),
       statsCards: [
         {
           type: "warning",
           icon: "ti-server",
           title: "Household Members",
-          value: "2",
+          value: "0",
           footerText: "Update now",
           footerIcon: "ti-reload",
         },
@@ -102,46 +60,84 @@ export default {
           type: "success",
           icon: "ti-wallet",
           title: "Household Devices",
-          value: "2",
+          value: "0",
           footerText: "Add Device",
           footerIcon: "ti-reload",
         },
         {
           type: "danger",
           icon: "ti-pulse",
-          title: "Errors",
-          value: "1",
+          title: "Notifications",
+          value: "0",
           footerText: "In the last hour",
           footerIcon: "ti-timer",
         },
       ],
-      
     };
+  },
+  created() {
+    this.fetchHouseholdMembers();
+    this.fetchHouseholdDevices();
+    this.fetchNotifications();
   },
   methods: {
     fetchHouseholdMembers() {
-      axios.get(`http://52.62.128.15:8080/house/user/${this.householdId}`)
+      if (!this.userId) return;
+      axios.get(`http://3.24.110.71:8080/house/user/${this.userId}`)
         .then(response => {
-          if (response.data.length > 0 && response.data[0].users) {
-            this.updateHouseholdMembersCount(response.data[0].users.length);
+          if (Array.isArray(response.data) && response.data.length > 0) {
+            const household = response.data[0];
+            const memberCount = household.users ? household.users.length : 0;
+            this.updateStatValue("Household Members", memberCount.toString());
           } else {
-            console.error('No users found in the household:', response.data);
-            this.updateHouseholdMembersCount(0); 
+            this.updateStatValue("Household Members", "0");
+            console.error('No household found or unexpected structure:', response.data);
           }
         })
         .catch(error => {
+          this.updateStatValue("Household Members", "0");
           console.error("Error fetching household members:", error);
-          this.updateHouseholdMembersCount(0); 
         });
     },
-    updateHouseholdMembersCount(memberCount) {
-      const memberCard = this.statsCards.find(card => card.title === "Household Members");
-      if (memberCard) {
-        memberCard.value = memberCount.toString(); 
-      }
+    fetchHouseholdDevices() {
+      if (!this.userId) return;
+      axios.get(`http://3.24.110.71:8080/devices/user/${this.userId}`)
+        .then(response => {
+          if (Array.isArray(response.data)) {
+            const deviceCount = response.data.length;
+            this.updateStatValue("Household Devices", deviceCount.toString());
+          } else {
+            this.updateStatValue("Household Devices", "0");
+            console.error('Unexpected device response structure:', response.data);
+          }
+        })
+        .catch(error => {
+          this.updateStatValue("Household Devices", "0");
+          console.error("Error fetching household devices:", error);
+        });
     },
-    created() {
-      this.fetchHouseholdMembers();
+    fetchNotifications() {
+      if (!this.userId) return;
+      axios.get(`http://3.24.110.71:8080/alerts/user/${this.userId}`)
+        .then(response => {
+          if (Array.isArray(response.data)) {
+            const notificationCount = response.data.length;
+            this.updateStatValue("Notifications", notificationCount.toString());
+          } else {
+            this.updateStatValue("Notifications", "0");
+            console.error('Unexpected alerts response structure:', response.data);
+          }
+        })
+        .catch(error => {
+          this.updateStatValue("Notifications", "0");
+          console.error("Error fetching notifications:", error);
+        });
+    },
+    updateStatValue(title, value) {
+      const card = this.statsCards.find(card => card.title === title);
+      if (card) {
+        card.value = value;
+      }
     },
     openModal(item) {
       this.currentItem = item;
@@ -149,10 +145,15 @@ export default {
     },
     processAlarm(data) {
       console.log(`Alarm type: ${data.type} for item:`, data.item);
-      // Add any additional processing or state updates here
     }
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+/* Make the device icon smaller */
+.device-icon {
+  width: 50px; /* adjust as needed */
+  height: auto;
+}
+</style>

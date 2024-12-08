@@ -76,14 +76,14 @@ export default {
             try {
                 const fileSaveRes = await Vue.reqFetch(
                     'POST',
-                    'http://52.62.128.15:8080/files/upload',
+                    'http://3.24.110.71:8080/files/upload',
                     {},
                     formData
                 );
 
                 await Vue.reqFetch(
                     'POST',
-                    'http://52.62.128.15:8080/soundData',
+                    'http://3.24.110.71:8080/soundData',
                     { 'Content-Type': 'application/json' },
                     {
                         filePath: fileSaveRes.fileName,
