@@ -15,7 +15,7 @@
 import { MediaRecorder, register } from 'extendable-media-recorder';
 import { connect, disconnect } from 'extendable-media-recorder-wav-encoder';
 import Vue from 'vue';
-import DragModal from './Recording/DragModal.vue';
+import DragModal from '../components/DragModal.vue';
 
 export default {
     components: {
