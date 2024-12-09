@@ -70,23 +70,33 @@ export default {
             }
         },
         async sendAudiofile(wavBlob) {
+            // Generate a unique filename. You could use timestamps, UUIDs, or any convention you prefer.
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-'); 
+            const fileName = `audio_${timestamp}.wav`;
+
             const formData = new FormData();
-            formData.append('file', wavBlob);
+            // Append the blob with a specified filename
+            formData.append('file', wavBlob, fileName);
 
             try {
-                const fileSaveRes = await Vue.reqFetch(
+                // First, upload the file
+                await Vue.reqFetch(
                     'POST',
                     'http://3.24.110.71:8080/files/upload',
                     {},
                     formData
                 );
 
+                // Instead of taking the server's returned filename, just rely on our original `fileName`
+                const finalFileName = fileName; 
+
+                // Then send the sound data, using the same filename we defined
                 await Vue.reqFetch(
                     'POST',
                     'http://3.24.110.71:8080/soundData',
                     { 'Content-Type': 'application/json' },
                     {
-                        filePath: fileSaveRes.fileName,
+                        filePath: finalFileName,
                         deviceId: this.recordingDeviceId,
                         userId: localStorage.getItem('userId'),
                     }
