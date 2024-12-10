@@ -1,6 +1,13 @@
 <template>
     <div class="basic-card-box" @click="onClick" :style="{borderColor: borderColor, borderStyle: borderStyle}">
-        <i :class="iconClass + ' box-icon'">{{ iconContent }}</i>
+        <i v-if="iconClass !== undefined" :class="iconClass + ' box-icon'">{{ iconContent }}</i>
+        <div v-if="imgSrc !== undefined" class="img-container">
+            <img
+              :src="imgSrc"
+              :alt="imgAlt"
+              class="card-img"
+            />
+          </div>
         <p>{{ textContent }}</p>
     </div>
 </template>
@@ -9,6 +16,11 @@ export default{
     props: {
         textContent: String,
         iconClass: String,
+        imgSrc: String,
+        imgAlt: {
+            type: String,
+            default: ''
+        },
         onClick: Function,
         borderStyle: {
             type: String,
@@ -44,5 +56,19 @@ export default{
 .box-icon {
   font-size: 48px;
   color: #555;
+}
+
+.img-container {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 </style>
