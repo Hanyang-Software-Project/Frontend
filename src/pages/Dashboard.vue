@@ -83,7 +83,7 @@ export default {
   methods: {
     fetchHouseholdMembers() {
       if (!this.userId) return;
-      axios.get(`http://3.24.110.71:8080/house/user/${this.userId}`)
+      axios.get(`${process.env.VUE_APP_URI_ROOT}/house/user/${this.userId}`)
         .then(response => {
           if (Array.isArray(response.data) && response.data.length > 0) {
             const household = response.data[0];
@@ -101,7 +101,7 @@ export default {
     },
     fetchHouseholdDevices() {
       if (!this.userId) return;
-      axios.get(`http://3.24.110.71:8080/devices/user/${this.userId}`)
+      axios.get(`${process.env.VUE_APP_URI_ROOT}/devices/user/${this.userId}`)
         .then(response => {
           if (Array.isArray(response.data)) {
             const deviceCount = response.data.length;
@@ -118,7 +118,7 @@ export default {
     },
     fetchNotifications() {
       if (!this.userId) return;
-      axios.get(`http://3.24.110.71:8080/alerts/user/${this.userId}`)
+      axios.get(`${process.env.VUE_APP_URI_ROOT}/alerts/user/${this.userId}`)
         .then(response => {
           if (Array.isArray(response.data)) {
             const notificationCount = response.data.length;

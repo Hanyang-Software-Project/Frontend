@@ -127,7 +127,7 @@ export default {
   async mounted() {
     const userId = localStorage.getItem('userId');
     try {
-      const response = await fetch(`http://3.24.110.71:8080/house/user/${userId}`, {
+      const response = await fetch(`${process.env.VUE_APP_URI_ROOT}/house/user/${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

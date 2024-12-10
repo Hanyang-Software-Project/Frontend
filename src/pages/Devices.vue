@@ -113,7 +113,7 @@ export default {
       this.authToken = 'Bearer ' + localStorage.getItem('authToken');
       this.devices = await Vue.reqFetch(
         'GET',
-        'http://3.24.110.71:8080/devices/user/' + localStorage.getItem('userId'),
+        process.env.VUE_APP_URI_ROOT+'/devices/user/' + localStorage.getItem('userId'),
         {
           'Content-Type': 'application/json',
           'Authorization': this.authToken
@@ -159,7 +159,7 @@ export default {
       try {
         return await Vue.reqFetch(
           'POST',
-          'http://3.24.110.71:8080/devices',
+          process.env.VUE_APP_URI_ROOT+'/devices',
           { 'Content-Type': 'application/json', 'Authorization': this.authToken },
           {
             deviceName: deviceName,
@@ -175,7 +175,7 @@ export default {
       try {
         await Vue.reqFetch(
           'DELETE',
-          'http://3.24.110.71:8080/devices/' + this.currentDevice.deviceId,
+          process.env.VUE_APP_URI_ROOT+'/devices/' + this.currentDevice.deviceId,
           { 'Authorization': this.authToken }
         );
 
@@ -198,7 +198,7 @@ export default {
       try {
         await Vue.reqFetch(
           'PUT',
-          'http://3.24.110.71:8080/devices/' + this.currentDevice.deviceId,
+          process.env.VUE_APP_URI_ROOT+'/devices/' + this.currentDevice.deviceId,
           { 'Content-Type': 'application/json', 'Authorization': this.authToken },
           { deviceName: newName.trim() }
         );

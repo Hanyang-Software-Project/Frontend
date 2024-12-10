@@ -41,7 +41,7 @@ router.beforeEach(async (to, from, next) => {
   try{
     const jsonRes = await Vue.reqFetch(
       'GET',
-      'http://3.24.110.71:8080/secure-endpoint',
+      process.env.VUE_APP_URI_ROOT+'/secure-endpoint',
       {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token

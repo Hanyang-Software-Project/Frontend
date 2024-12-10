@@ -88,7 +88,7 @@ export default {
   methods: {
     fetchHouseholdUsers() {
       axios
-        .get(`http://3.24.110.71:8080/house/user/${this.userId}`)
+        .get(`${process.env.VUE_APP_URI_ROOT}/house/user/${this.userId}`)
         .then((response) => {
           if (response.data.length > 0 && response.data[0].users) {
             const userIds = response.data[0].users.map((user) => user.userId);
@@ -104,7 +104,7 @@ export default {
     fetchAlertsForUsers(userIds) {
       userIds.forEach((userId) => {
         axios
-          .get(`http://3.24.110.71:8080/alerts/user/${userId}`)
+          .get(`${process.env.VUE_APP_URI_ROOT}/alerts/user/${userId}`)
           .then((response) => {
             this.updateNotifications(
               response.data.map((alert) => ({

@@ -82,7 +82,7 @@ export default {
                 // First, upload the file
                 await Vue.reqFetch(
                     'POST',
-                    'http://3.24.110.71:8080/files/upload',
+                    process.env.VUE_APP_URI_ROOT+'/files/upload',
                     {},
                     formData
                 );
@@ -93,7 +93,7 @@ export default {
                 // Then send the sound data, using the same filename we defined
                 await Vue.reqFetch(
                     'POST',
-                    'http://3.24.110.71:8080/soundData',
+                    process.env.VUE_APP_URI_ROOT+'/soundData',
                     { 'Content-Type': 'application/json' },
                     {
                         filePath: finalFileName,

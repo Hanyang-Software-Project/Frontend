@@ -38,7 +38,7 @@ export default{
 
         const apiRes = await Vue.reqFetch(
           'POST',
-          'http://3.24.110.71:8080/login',
+          process.env.VUE_APP_URI_ROOT+'/login',
           {'Content-Type': 'application/json'},
           body
         );

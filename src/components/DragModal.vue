@@ -56,7 +56,7 @@ export default {
 
             try {
                 // Step 1: Upload file
-                const uploadResponse = await fetch("http://3.24.110.71:8080/files/upload", {
+                const uploadResponse = await fetch(process.env.VUE_APP_URI_ROOT+"/files/upload", {
                     method: "POST",
                     body: formData,
                 });
@@ -68,7 +68,7 @@ export default {
                 const fileSaveRes = await uploadResponse.json();
 
                 // Step 2: Send metadata to process the file
-                const soundDataResponse = await fetch("http://3.24.110.71:8080/soundData", {
+                const soundDataResponse = await fetch(process.env.VUE_APP_URI_ROOT+"/soundData", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({

@@ -102,7 +102,7 @@ export default {
 
       try {
         const response = await fetch(
-          `http://3.24.110.71:8080/house/${this.houseId}`,
+          `${process.env.VUE_APP_URI_ROOT}/house/${this.houseId}`,
           {
             method: 'PUT',
             headers: {

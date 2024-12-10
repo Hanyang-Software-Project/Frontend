@@ -64,7 +64,7 @@ export default {
     },
     fetchHousehold() {
       const householdId = localStorage.getItem('userId');
-      axios.get(`http://3.24.110.71:8080/house/user/${householdId}`)
+      axios.get(`${process.env.VUE_APP_URI_ROOT}/house/user/${householdId}`)
         .then(response => {
           if (Array.isArray(response.data) && response.data.length > 0) {
             const household = response.data[0];
@@ -84,7 +84,7 @@ export default {
     },
     fetchUserDetails(userIds) {
       userIds.forEach(userId => {
-        axios.get(`http://3.24.110.71:8080/users/userDTO/${userId}`)
+        axios.get(`${process.env.VUE_APP_URI_ROOT}/users/userDTO/${userId}`)
           .then(response => {
             this.users.push({
               id: response.data.id,
@@ -99,7 +99,7 @@ export default {
     },
     addUser() {
       let newUser = { username: this.newUsername, name: "New User", email: "new@example.com" };
-      axios.post(`http://3.24.110.71:8080/users`, newUser)
+      axios.post(`${process.env.VUE_APP_URI_ROOT}/users`, newUser)
         .then(response => {
           this.users.push(response.data);
           this.newUsername = ''; 
@@ -109,7 +109,7 @@ export default {
         });
     },
     removeUser(userId) {
-      axios.delete(`http://3.24.110.71:8080/users/${userId}`)
+      axios.delete(`${process.env.VUE_APP_URI_ROOT}/users/${userId}`)
         .then(() => {
           this.users = this.users.filter(user => user.id !== userId);
         })

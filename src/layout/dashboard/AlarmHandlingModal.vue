@@ -26,7 +26,7 @@ export default {
   methods: {
     handleAlarm(type) {
       const threatFlag = type === 'real'; // Converts 'real' to true, any other value to false
-      axios.put(`http://3.24.110.71:8080/alerts/${this.currentItem.alertId}`, {
+      axios.put(`${process.env.VUE_APP_URI_ROOT}/alerts/${this.currentItem.alertId}`, {
         threatFlag: threatFlag
       })
       .then(() => {
