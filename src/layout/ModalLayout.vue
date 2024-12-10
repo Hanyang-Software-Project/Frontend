@@ -1,6 +1,7 @@
 <template>
     <div id="backdrop" @click.self="closeModal" :style="{display: visible ? 'flex' : 'none'}">
         <card id="modalCard" class="card" :title="modalTitle">
+        <button class="close-button" @click="closeModal">×</button>
             <slot></slot>
         </card>
     </div>
@@ -35,6 +36,7 @@ export default{
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    flex-direction: column;
 }
 
 #modalCard {
@@ -44,5 +46,15 @@ export default{
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     width: auto;
     max-width: 90%;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 13px;
 }
 </style>
