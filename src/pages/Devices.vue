@@ -1,5 +1,7 @@
 <template>
   <div>
+
+    <!-- Device listing container -->
     <div class="device-cards-container">
       <BasicCard
         textContent="Add New Device"
@@ -21,6 +23,7 @@
       />
     </div>
 
+    <!-- Add device modal -->
     <ModalLayout
       :visible="choiceModalOpened"
       modalTitle="What type of device?"
@@ -34,42 +37,37 @@
           borderColor="black"
           class="choiceCard m-2"
         />
-        <div
+        <BasicCard
+          textContent="Add LG Smart Device"
+          :onClick="togglePopup"
+          borderColor="black"
           class="choiceCard m-2"
-          :style="{ borderColor: 'black' }"
-          @click="togglePopup"
-        >
-          <div class="icon-container">
-            <img
-              src="@/assets/img/LG_DEVICES.png"
-              alt="LG Smart Home"
-              class="icon-image"
-            />
-          </div>
-          <p>Add LG Smart Device</p>
-        </div>
+          :imgSrc="require('@/assets/img/LG_DEVICES.png')"
+          imgAlt="LG Smart Home"
+        />
       </div>
     </ModalLayout>
 
-    <!-- LG Devices Popup -->
-    <div v-if="showPopup" class="popup-overlay" @click.self="togglePopup">
-      <div class="popup">
-        <button class="close-button" @click="togglePopup">×</button>
-        <h3>Select a Smart Device</h3>
-        <input
-          type="text"
-          placeholder="Search device name"
-          class="search-field"
-          v-model="searchQuery"
-        />
-        <ul class="device-list">
-          <li v-for="lgDevice in filteredDevices" :key="lgDevice" @click="selectLGDevice(lgDevice)">
-            {{ lgDevice }}
-          </li>
-        </ul>
-      </div>
-    </div>
+    <!-- LG Devices modal -->
+    <ModalLayout
+      :visible="showPopup"
+      modalTitle="Select a Smart Device"
+      @update:visible="showPopup = $event"
+    >
+      <input
+        type="text"
+        placeholder="Search device name"
+        class="search-field"
+        v-model="searchQuery"
+      />
+      <ul class="device-list">
+        <li v-for="lgDevice in filteredDevices" :key="lgDevice" @click="selectLGDevice(lgDevice)">
+          {{ lgDevice }}
+        </li>
+      </ul>
+    </ModalLayout>
 
+    <!-- Device update modal -->
     <ModalLayout
       :visible="showDeviceModalOpened"
       :modalTitle="currentDevice.deviceName"
@@ -242,20 +240,6 @@ export default {
   width: 180px;
 }
 
-.icon-container {
-  width: 70px;
-  height: 70px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.icon-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
 .device-cards-container {
   display: flex;
   justify-content: space-evenly;
@@ -278,37 +262,6 @@ export default {
 
 #add-device-modal-content .choiceCard {
   min-width: 175px;
-}
-
-.popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 20001; /* Even higher than the overlay */
-  position: relative;
-}
-
-.popup {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 300px;
-  width: 130%;
-  z-index: 9999;
-}
-
-.close-button {
-  float: right;
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
 }
 
 .search-field {
