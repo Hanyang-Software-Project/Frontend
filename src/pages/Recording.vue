@@ -80,15 +80,16 @@ export default {
 
             try {
                 // First, upload the file
-                await Vue.reqFetch(
+                /*await Vue.reqFetch(
                     'POST',
                     process.env.VUE_APP_URI_ROOT+'/files/upload',
                     {},
                     formData
-                );
+                );*/
 
                 // Instead of taking the server's returned filename, just rely on our original `fileName`
                 const finalFileName = fileName; 
+
 
                 // Then send the sound data, using the same filename we defined
                 await Vue.reqFetch(

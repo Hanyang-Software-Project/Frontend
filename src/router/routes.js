@@ -10,12 +10,14 @@ import Devices from "../pages/Devices.vue";
 import Login from "@/pages/Login.vue";
 import Signin from "@/pages/Signin.vue";
 import TestRecording from "../pages/Recording.vue";
+import Demo from "./Demo.vue";
 
 const routes = [
   { path: "/", redirect: {name: 'loginPage'}, name: 'root'},
   { path: "/login", component: Login, name: 'loginPage'},
   { path: "/signin", component: Signin, name: 'signinPage'},
   { path: "/recording", component: TestRecording, name: 'recording', meta: {requiresDeviceCookie: true}},
+  { path: "/demo", component: Demo },
   {
     path: "/app",
     component: DashboardLayout,
@@ -45,10 +47,10 @@ const routes = [
         name: "devices",
         component: Devices,
         meta: {requiresAuth: true}
-      },
+      }
     ],
   },
-  { path: "*", component: NotFound },
+  { path: "*", component: NotFound }
 ];
 
 /**
